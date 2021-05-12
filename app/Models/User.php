@@ -70,4 +70,13 @@ class User extends Authenticatable
             return Storage::url($val);
         }
     }
+
+    public function photo()
+    {
+        if($this->photo && Storage::exists('photos/' . basename($this->photo))) {
+            return $this->photo;
+        } else {
+            return asset('assets/images/user.png');
+        }
+    }
 }

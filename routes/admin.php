@@ -37,6 +37,7 @@ Route::middleware('admin')->group(function(){
     Route::patch('/members/{user}', [AdminUsersController::class, 'update'])->name('admin.users.update');
     Route::delete('/members/{user}', [AdminUsersController::class, 'destroy'])->name('admin.users.delete');
 
-    Route::get('/members/import', [AdminUsersController::class, 'showimport'])->name('admin.users.showimport');
     Route::post('/members/import', [AdminUsersController::class, 'import'])->name('admin.users.import');
+
+    Route::post('/members/bulkupdate/batch', [AdminUsersController::class, 'bulkupdate'])->name('admin.usres.bulkupdate');
 });

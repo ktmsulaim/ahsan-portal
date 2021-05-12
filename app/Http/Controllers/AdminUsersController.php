@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\UsersImport;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminUsersController extends Controller
 {
@@ -33,7 +35,7 @@ class AdminUsersController extends Controller
 
          // Total records
          $totalRecords = User::where('batch', $batch)->count();
-         $totalRecordswithFilter = User::where('name', 'like', "%$searchValue%")->count();
+         $totalRecordswithFilter = User::where('batch', $batch)->where('name', 'like', "%$searchValue%")->count();
          // Fetch records
         $users = User::orderBy($columnName,$columnSortOrder)
         ->where('batch', $batch)
@@ -46,11 +48,11 @@ class AdminUsersController extends Controller
         
         foreach($users as $key => $user){
            $data_arr[] = array(
-             "id" => $key + 1,
-             "photo" => $user->photo,
+             "adno" => $user->adno,
+             "photo" => $user->photo(),
              "name" => $user->name,
              "phone_personal" => $user->phone_personal,
-             "created_at" => optional($user->created_at)->format('F d, Y'),
+             "email" => $user->email,
              "url" => [
                  'show' => route('admin.users.show', $user->id),
                  'edit' => route('admin.users.edit', $user->id),
@@ -87,6 +89,23 @@ class AdminUsersController extends Controller
         return Redirect::route('admin.users.index');
     }
 
+    public function import(Request $request)
+    {
+        if(!$request->hasFile('file') || !$request->file('file')->isValid()) {
+            Toastr::error('Please select a file. Or make sure the selected file is valid', 'File error');
+
+            return Redirect::back();
+        }
+
+        if(Excel::import(new UsersImport, $request->file('file'))) {
+            Toastr::success('The members were successfully imported!', 'Imported');
+        } else {
+            Toastr::error('Unable to import the members! Try again', 'Failed');
+        }
+
+        return Redirect::back();
+    }
+
     public function show(User $user)
     {
         return view('admin.members.view', compact('user'));
@@ -107,6 +126,27 @@ class AdminUsersController extends Controller
 
         Toastr::success('The member was successfully updated!', 'Updated');
         return Redirect::route('admin.users.show', $user->id);
+    }
+
+    public function bulkupdate(Request $request)
+    {
+        $column = $request->get('column');
+        $value = $request->get('value');
+        $ids = $request->get('selected');
+
+        if(!$ids || !is_array($ids) || count($ids) == 0) {
+            Toastr::error('Select atleast one member to make changes', 'Select member');
+            return Redirect::back();
+        }
+
+        foreach($ids as $id) {
+            $user = User::find($id);
+            $user->{$column} = $value;
+            $user->save();
+        }
+
+        Toastr::success('The members were updated!', 'Updated');
+        return Redirect::back();
     }
 
     public function destroy(User $user)

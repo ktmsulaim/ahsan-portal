@@ -53,16 +53,27 @@
             $('.fileinput').fileinput({
                 showUpload: false,
                 theme: 'fas',
-                maxFileSize: 512,
+                maxFileSize: $(this).data('max-file-size') || 512,
                 allowedFileTypes: ['image'],
                 allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
             })
 
-            $('#deleteModalTrigger').click(function(e) {
-                e.preventDefault();
+            $('.fileinput-any').fileinput({
+                showUpload: false,
+                theme: 'fas',
+                maxFileSize: $(this).data('max-file-size') || 512,
+            })
 
-                $('#delete-modal').appendTo('body').modal('show');
-            });
+            function showModal(trigger, modal) {
+                $(trigger).click(function(e){
+                    e.preventDefault();
+
+                    $(modal).appendTo('body').modal('show');
+                })
+            }
+
+            showModal('#deleteModalTrigger', '#delete-modal')
+            showModal('#importMembersModalTrigger', '#modal-import')
         })
     </script>
 

@@ -1,15 +1,42 @@
 @extends('layouts.base', ['title' => "Members"])
 
 @section('breadcrumb')
-<li class="breadcrumb-item active"><a href="{{ route('admin.users.index') }}">Members</a></li>
+    <li class="breadcrumb-item active"><a href="{{ route('admin.users.index') }}">Members</a></li>
 @endsection
 
 @section('action_button')
-<a href="{{ route('admin.users.create') }}"
-class="btn btn-success ml-1">Add</a>
+    <a href="{{ route('admin.users.create') }}" class="btn btn-success ml-1"><span
+            class="material-icons mr-2">person_add</span> Add</a>
+    <button class="btn btn-info ml-1" id="importMembersModalTrigger"><span class="material-icons mr-2">import_export</span> Import</button>
 @endsection
 
 @section('content')
+    <div id="modal-import" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-large-title"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-large-title">Import Members</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> <!-- // END .modal-header -->
+                <div class="modal-body">
+                   <p>Select Excel file to import members. Make sure all required columns have any value.</p>
+
+                   <form id="importMembersForm" action="{{ route('admin.users.import') }}" method="post" enctype="multipart/form-data">
+                       @csrf
+                       <input type="file" name="file" id="file" data-max-file-size="250" class="fileinput-any" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+                   </form>
+                </div> <!-- // END .modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                    <button form="importMembersForm" class="btn btn-primary" type="submit">Upload</button>
+                </div> <!-- // END .modal-footer -->
+            </div> <!-- // END .modal-content -->
+        </div> <!-- // END .modal-dialog -->
+    </div> <!-- // END .modal -->
+
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -26,11 +53,11 @@ class="btn btn-success ml-1">Add</a>
                     <table id="membersTable" class="table">
                         <thead>
                             <tr>
-                                <td>#</td>
+                                <td>AD.NO</td>
                                 <td>Photo</td>
                                 <td>Name</td>
                                 <td>Phone</td>
-                                <td>Joined date</td>
+                                <td>Email</td>
                                 <td></td>
                             </tr>
                         </thead>
@@ -46,42 +73,61 @@ class="btn btn-success ml-1">Add</a>
 
 @section('js')
     <script>
-        $(function(){
-            
+        $(function() {
+
             let batch = $('#batch').val();
-            const baseUrl = "/admin/members/ajax/"; 
+            const baseUrl = "/admin/members/ajax/";
             let url = baseUrl + batch
-    
+
 
             const table = $("#membersTable").DataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    "ajax": {
-                        contentType: 'application/json',
-                        url: url,
-                        type: 'GET',
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    contentType: 'application/json',
+                    url: url,
+                    type: 'GET',
+                },
+                'paging': true,
+                'lengthChange': false,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false,
+                'createdRow': function(row, data, dataIndex) {
+                    $(row).attr('data-id', data.id);
+                },
+                'columns': [{
+                        data: 'adno'
                     },
-                    'paging': true,
-                    'lengthChange': false,
-                    'searching': true,
-                    'ordering': true,
-                    'info': true,
-                    'autoWidth': false,
-                    'columns': [
-                        {data: 'id'},
-                        {data: 'photo', render: function(data, type, full, meta){
+                    {
+                        data: 'photo',
+                        render: function(data, type, full, meta) {
                             return `<img width="60" class="img-circle" src="${data}" >`;
-                        }},
-                        {data: 'name'},
-                        {data: 'phone_personal'},
-                        {data: 'created_at'},
-                        {data: 'url', render: function(data) {
+                        }
+                    },
+                    {
+                        data: 'name'
+                    },
+                    {
+                        data: 'phone_personal'
+                    },
+                    {
+                        data: 'email'
+                    },
+                    {
+                        data: 'url',
+                        render: function(data) {
                             return `<a class="btn btn-sm" href="${data.show}"><span class="material-icons">visibility</span></a><a class="btn btn-sm" href="${data.edit}"><span class="material-icons">create</span></a>`;
-                        }}
-                    ]
-                })
-           
+                        }
+                    }
+                ]
+            })
 
+            $('#membersTable').on('click', 'tbody tr', function() {
+                $(this).toggleClass('selected');
+                console.log($(this).data('id'));
+            });
 
             $('#batch').change(function() {
                 batch = $(this).val()
@@ -94,5 +140,6 @@ class="btn btn-success ml-1">Add</a>
 
 
         })
+
     </script>
 @endsection
