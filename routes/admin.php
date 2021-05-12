@@ -39,5 +39,5 @@ Route::middleware('admin')->group(function(){
 
     Route::post('/members/import', [AdminUsersController::class, 'import'])->name('admin.users.import');
 
-    Route::post('/members/bulkupdate/batch', [AdminUsersController::class, 'bulkupdate'])->name('admin.usres.bulkupdate');
+    Route::post('/members/bulkupdate/batch', [AdminUsersController::class, 'bulkupdate'])->name('admin.users.bulkupdate');
 });

@@ -48,6 +48,7 @@ class AdminUsersController extends Controller
         
         foreach($users as $key => $user){
            $data_arr[] = array(
+            "id" => $user->id,
              "adno" => $user->adno,
              "photo" => $user->photo(),
              "name" => $user->name,
@@ -132,7 +133,7 @@ class AdminUsersController extends Controller
     {
         $column = $request->get('column');
         $value = $request->get('value');
-        $ids = $request->get('selected');
+        $ids = explode(',', $request->get('selected'));
 
         if(!$ids || !is_array($ids) || count($ids) == 0) {
             Toastr::error('Select atleast one member to make changes', 'Select member');
