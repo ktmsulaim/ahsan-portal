@@ -29,6 +29,7 @@ Route::middleware('admin')->group(function(){
      * ---------------------------------------------------------------------
      */
     Route::get('/members', [AdminUsersController::class, 'index'])->name('admin.users.index');
+    Route::get('/members/ajax/{batch}', [AdminUsersController::class, 'dtIndex'])->name('admin.users.dtIndex');
     Route::get('/members/create', [AdminUsersController::class, 'create'])->name('admin.users.create');
     Route::post('/members', [AdminUsersController::class, 'store'])->name('admin.users.store');
     Route::get('/members/{user}', [AdminUsersController::class, 'show'])->name('admin.users.show');

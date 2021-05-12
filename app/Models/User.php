@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -60,6 +61,13 @@ class User extends Authenticatable
     {
         if($val) {
             $this->attributes['password'] = bcrypt($val);
+        }
+    }
+
+    public function getPhotoAttribute($val)
+    {
+        if($val) {
+            return Storage::url($val);
         }
     }
 }

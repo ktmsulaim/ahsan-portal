@@ -32,10 +32,11 @@ class CreateUsersTable extends Migration
             $table->string('address2')->nullable();
             $table->string('phone_home')->nullable();
             $table->string('phone_personal');
-            $table->boolean('martial_status')->default(0);
+            $table->boolean('marital_status')->default(0);
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('last_login')->nullable();
         });
     }
 

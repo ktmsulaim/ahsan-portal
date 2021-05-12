@@ -31,19 +31,13 @@
     
     <link type="text/css" href="{{ asset('assets/css/fileinput.min.css') }}" rel="stylesheet">
     
+    {{-- <link type="text/css" href="{{ asset('assets/vendor/datatables/jquery.dataTables.min.css') }}" rel="stylesheet"> --}}
+    <link type="text/css" href="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('assets/vendor/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet">
+    
     <link rel="shortcut icon" href="{{ asset('img/icon.png') }}" type="image/x-icon">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133433427-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
 
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'UA-133433427-1');
-
-    </script>
+    @yield('css')
 
 </head>
 

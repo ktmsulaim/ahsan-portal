@@ -15,6 +15,60 @@ class AdminUsersController extends Controller
         return view('admin.members.index');
     }
 
+    public function dtIndex(Request $request, $batch)
+    {
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+         // Total records
+         $totalRecords = User::where('batch', $batch)->count();
+         $totalRecordswithFilter = User::where('name', 'like', "%$searchValue%")->count();
+         // Fetch records
+        $users = User::orderBy($columnName,$columnSortOrder)
+        ->where('batch', $batch)
+        ->where('name', 'like', '%' .$searchValue . '%')
+        ->skip($start)
+        ->take($rowperpage)
+        ->get();
+
+        $data_arr = array();
+        
+        foreach($users as $key => $user){
+           $data_arr[] = array(
+             "id" => $key + 1,
+             "photo" => $user->photo,
+             "name" => $user->name,
+             "phone_personal" => $user->phone_personal,
+             "created_at" => optional($user->created_at)->format('F d, Y'),
+             "url" => [
+                 'show' => route('admin.users.show', $user->id),
+                 'edit' => route('admin.users.edit', $user->id),
+             ]
+           );
+        }
+   
+        $response = array(
+           "draw" => intval($draw),
+           "iTotalRecords" => $totalRecords,
+           "iTotalDisplayRecords" => $totalRecordswithFilter,
+           "aaData" => $data_arr
+        );
+   
+        echo json_encode($response);
+        exit;
+    }
+
 
     public function create()
     {
@@ -33,6 +87,11 @@ class AdminUsersController extends Controller
         return Redirect::route('admin.users.index');
     }
 
+    public function show(User $user)
+    {
+        return view('admin.members.view', compact('user'));
+    }
+
     public function edit(User $user)
     {
         return view('admin.members.edit', compact('user'));
@@ -40,47 +99,52 @@ class AdminUsersController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $this->data('update');
+        $this->data('update', $user->id);
 
         $user->update($request->all());
 
         $this->uploadImage($user);
 
         Toastr::success('The member was successfully updated!', 'Updated');
-        Redirect::route('admin.users.show', $user->id);
+        return Redirect::route('admin.users.show', $user->id);
     }
 
     public function destroy(User $user)
     {
-        if ($user->photo && Storage::exists('photos/' . $user->photo)) {
-            Storage::delete('photos/' . $user->photo);
+        if ($user->photo) {
+            $photo = 'photos/' . basename($user->photo);
+            if(Storage::exists($photo)) {
+                Storage::delete($photo);
+            }
         }
 
         $user->delete();
 
         Toastr::success('The member was successfully deleted!', 'Deleted');
-        Redirect::route('admin.users.index');
+        return Redirect::route('admin.users.index');
     }
 
     private function uploadImage($user)
     {
+        
         if (request()->hasFile('photo') && request()->file('photo')->isValid()) {
             //check it has already image
-            $oldImage = $user->photo;
-
-            $filename = Storage::put('photos', request()->file('photo'));
+            $oldImage = basename($user->photo);
+            
+            // if already one image before delete it after successful uploading
+            if ($oldImage && Storage::exists('photos/'.$oldImage)) {
+                Storage::delete('photos/'.$oldImage);
+            }
+            
+            $filename = Storage::putFile('photos', request()->file('photo'));
 
             $user->photo = $filename;
             $user->save();
 
-            // if already one image before delete it after successful uploading
-            if ($oldImage) {
-                Storage::delete('photos/' . $oldImage);
-            }
         }
     }
 
-    private function data($type = 'create')
+    private function data($type = 'create', $id = null)
     {
         $validations = [
             'name' => 'required|max:25',
@@ -100,13 +164,14 @@ class AdminUsersController extends Controller
             'address2' => '',
             'phone_home' => '',
             'phone_personal' => 'required',
-            'marital_status' => 'required'
+            'marital_status' => 'boolean'
         ];
 
         if ($type == 'update') {
             unset($validations['password']);
+            $validations['email'] = 'required|email|unique:users,email,'.$id;
         }
-
+        
         request()->validate($validations);
     }
 }

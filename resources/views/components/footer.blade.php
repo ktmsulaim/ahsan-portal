@@ -17,6 +17,14 @@
     <script src="{{ asset('assets/vendor/material-design-kit.js') }}"></script>
     
     <script src="{{ asset('assets/vendor/flatpickr/flatpickr.min.js') }}"></script>
+    
+    <script src="{{ asset('assets/vendor/fileinput/fileinput.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/fileinput/theme.min.js') }}"></script>
+    
+    <script src="{{ asset('assets/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/responsive.bootstrap4.min.js') }}"></script>
 
     <!-- App -->
     <script src="{{ asset('assets/js/toggle-check-all.js') }}"></script>
@@ -36,16 +44,31 @@
             
             $('input[type="checkbox"]').change(function(e) {
                 if($(this).is(':checked')) {
-                    $(this).val(1);
+                    $(this).val(true);
                 } else {
-                    $(this).val(0);
+                    $(this).val(false);
                 }
             })
+
+            $('.fileinput').fileinput({
+                showUpload: false,
+                theme: 'fas',
+                maxFileSize: 512,
+                allowedFileTypes: ['image'],
+                allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+            })
+
+            $('#deleteModalTrigger').click(function(e) {
+                e.preventDefault();
+
+                $('#delete-modal').appendTo('body').modal('show');
+            });
         })
     </script>
 
     {!! Toastr::message() !!}
 
+    @yield('js')
 </body>
 
 </html>

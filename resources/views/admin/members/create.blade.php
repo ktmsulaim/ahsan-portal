@@ -1,4 +1,4 @@
-@extends('layouts.base', ['title' => "Dashboard"])
+@extends('layouts.base', ['title' => "Add new member"])
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Members</a></li>
@@ -10,7 +10,7 @@
         <div class="col-md-8">
             <div class="card card-form">
                 <div class="card-body card-form__body">
-                    <form id="userForm" action="{{ route('admin.users.store') }}" method="post">
+                    <form id="userForm" action="{{ route('admin.users.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
@@ -155,15 +155,15 @@
 
                                         <option value="MALAPPURAM">MALAPPURAM</option>
 
-                                        <option value="1PALAKKAD">PALAKKAD</option>
+                                        <option value="PALAKKAD">PALAKKAD</option>
 
-                                        <option value="1PATHANAMTHITTA">PATHANAMTHITTA</option>
+                                        <option value="PATHANAMTHITTA">PATHANAMTHITTA</option>
 
-                                        <option value="1THIRUVANANTHAPURAM">THIRUVANANTHAPURAM</option>
+                                        <option value="THIRUVANANTHAPURAM">THIRUVANANTHAPURAM</option>
 
-                                        <option value="1THRISSUR">THRISSUR</option>
+                                        <option value="THRISSUR">THRISSUR</option>
 
-                                        <option value="1WAYANAD">WAYANAD</option>
+                                        <option value="WAYANAD">WAYANAD</option>
 
                                     </select>
                                 </div>
@@ -212,7 +212,7 @@
                                     <label for="marital_status">Marital status</label>
                                     <div>
                                         <div class="custom-control custom-checkbox-toggle custom-control-inline mr-1">    
-                                            <input type="checkbox" id="marital_status" class="custom-control-input">
+                                            <input type="checkbox" name="marital_status" id="marital_status" class="custom-control-input" value=false>
                                             <label for="marital_status" class="custom-control-label"></label>
                                         </div>
                                     </div>
@@ -229,6 +229,14 @@
         </div>
         <div class="col-md-4">
             @include('components.errors')
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <input type="file" name="photo" id="photo" class="fileinput" form="userForm">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
