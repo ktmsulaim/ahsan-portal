@@ -42,7 +42,7 @@
         </div>
         <div class="form-group text-center">
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" checked="" id="remember">
+                <input type="checkbox" name="remember" class="custom-control-input" checked="" id="remember">
                 <label class="custom-control-label" for="remember">Remember me</label>
             </div>
         </div>

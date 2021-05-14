@@ -11,7 +11,7 @@
                 </button>
             </div> <!-- // END .modal-header -->
             <div class="modal-body">
-                <p>You are going to delete this {{ $type }}. Remember all related data will be erased and it can't be recovered once its deleted. Proceed?</p>
+                <p>You are going to delete this {{ $type }}. Remember all related data will be erased and it can't be recovered once it's deleted. Proceed?</p>
             </div> <!-- // END .modal-body -->
             <div class="modal-footer">
                 <form id="deleteForm" action="{{ $deleteUrl }}" method="post">

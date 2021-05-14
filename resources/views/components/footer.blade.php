@@ -34,6 +34,8 @@
     <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
 
+    @yield('scripts')
+
     <script>
         $(function(){
             $('.flatpickr').flatpickr({

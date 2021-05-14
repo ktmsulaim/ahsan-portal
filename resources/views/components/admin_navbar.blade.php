@@ -18,8 +18,8 @@
                             <span class="sidebar-menu-text">Members</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item {{ Request::url() == route('admin.index') ? 'active' : '' }}">
-                        <a class="sidebar-menu-button" href="javascript:void(0)">
+                    <li class="sidebar-menu-item {{ Request::is('admin/campaigns*') ? 'active' : '' }}">
+                        <a class="sidebar-menu-button" href="{{ route('admin.campaigns.index') }}">
                             <i
                                 class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dashboard</i>
                             <span class="sidebar-menu-text">Campaigns</span>

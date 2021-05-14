@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminAuth\ForgotPasswordController;
 use App\Http\Controllers\AdminAuth\ResetPasswordController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUsersController;
+use App\Http\Controllers\CampaignController;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -15,9 +16,9 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout.post');
 
 
-Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.request');
-Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.email');
-Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.reset');
+Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('admin.password.request');
+Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('admin.password.email');
+Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('admin.password.reset');
 Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm']);
 
 Route::middleware('admin')->group(function(){
@@ -40,4 +41,6 @@ Route::middleware('admin')->group(function(){
     Route::post('/members/import', [AdminUsersController::class, 'import'])->name('admin.users.import');
 
     Route::post('/members/bulkupdate/batch', [AdminUsersController::class, 'bulkupdate'])->name('admin.users.bulkupdate');
+
+    Route::resource('campaigns', CampaignController::class, ['as' => 'admin']);
 });
