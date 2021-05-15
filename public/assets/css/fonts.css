@@ -1,0 +1,18 @@
+@font-face {
+    font-family: PanchariUni;
+    src: url("/assets/fonts/panchariUni/PanchariUniN.woff2") format("woff2"), url("/assets/fonts/panchariUni/PanchariUniN.woff") format("woff");
+    font-weight: normal;
+}
+@font-face {
+    font-family: PanchariUni;
+    src: url("/assets/fonts/panchariUni/PanchariUniB.woff2") format("woff2"), url("/assets/fonts/panchariUni/PanchariUniB.woff") format("woff");
+    font-weight: bold;
+}
+
+.ml {
+    font-family: 'PanchariUni', sans-serif;
+}
+
+.ml.bold {
+    font-weight: bold;
+}

@@ -9,6 +9,8 @@ use App\Http\Controllers\AdminAuth\ResetPasswordController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\LetterpadPrintController;
+use App\Http\Controllers\SponsorController;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -37,10 +39,30 @@ Route::middleware('admin')->group(function(){
     Route::get('/members/{user}/edit', [AdminUsersController::class, 'edit'])->name('admin.users.edit');
     Route::patch('/members/{user}', [AdminUsersController::class, 'update'])->name('admin.users.update');
     Route::delete('/members/{user}', [AdminUsersController::class, 'destroy'])->name('admin.users.delete');
-
+    
     Route::post('/members/import', [AdminUsersController::class, 'import'])->name('admin.users.import');
-
+    
     Route::post('/members/bulkupdate/batch', [AdminUsersController::class, 'bulkupdate'])->name('admin.users.bulkupdate');
-
+    
     Route::resource('campaigns', CampaignController::class, ['as' => 'admin']);
+    
+    
+    /**
+     * ---------------------------------------------------------------------
+     * Sponsors management
+     * ---------------------------------------------------------------------
+     */
+    Route::resource('sponsors', SponsorController::class, ['as' => 'admin'])->except(['index']);
+    
+    Route::get('/sponsors/campaigns/{campaign}', [SponsorController::class, 'index'])->name('admin.sponsors.index');
+
+    Route::get('/members/{user}/campaigns/{campaign}', [SponsorController::class, 'byUser'])->name('admin.sponsors.byUser');
+    Route::get('/members/{user}/campaigns/{campaign}/sponsors', [SponsorController::class, 'dtByUser'])->name('admin.sponsors.dtByUser');
+
+    /**
+     * ---------------------------------------------------------------------
+     * Letterpad printing
+     * ---------------------------------------------------------------------
+     */
+    Route::get('/sponsors/{sponsor}/print/', [LetterpadPrintController::class, 'print'])->name('admin.sponsors.letterpad.print');
 });

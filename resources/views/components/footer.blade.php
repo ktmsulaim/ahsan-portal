@@ -77,6 +77,7 @@
             showModal('#deleteModalTrigger', '#delete-modal')
             showModal('#importMembersModalTrigger', '#modal-import')
             showModal('#bulkEditTrigger', '#modal-bulkedit')
+            showModal('#addSponsorTrigger', '#add-sponsor-modal')
         })
     </script>
 

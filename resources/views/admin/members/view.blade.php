@@ -110,7 +110,55 @@
                 </div>
 
                 <div class="tab-pane" id="campaigns">
-                    <p>All campaigns are listed here</p>
+                    @if ($campaigns && count($campaigns) > 0)
+                        <div class="row card-group-row">
+                            @foreach ($campaigns as $camp)
+                            @php
+                                $totalSponsors = $user->sponsors()->where('campaign_id', $camp->id)->count();
+                                $totalAmount = $user->sponsors()->where('campaign_id', $camp->id)->sum('amount');
+                                $targetMet =  ($totalAmount >= $camp->individualTarget('')) ? 'Yes' : 'No';
+                                $topAmount = $user->sponsors()->where('campaign_id', $camp->id)->orderBy('amount', 'desc')->first();
+
+                            @endphp
+                            <div class="col-lg-6 col-md-6 card-group-row__col">
+                                <div class="card card-group-row__card">
+                                    <div class="card-body">
+                                        <div class="card-image">
+                                            <img src="{{ $camp->logo() }}" class="img-fluid" alt="">
+                                        </div>
+                                        <div class="card-title my-2">
+                                            <h4><a href="{{ route('admin.sponsors.byUser', ['user' => $user->id, 'campaign' => $camp->id]) }}">{{ $camp->name }}</a></h4>
+                                        </div>
+                                        <div class="summary">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <b>Total sponsors:</b>
+                                                    <span class="ml-2">{{ $totalSponsors }}</span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <b>Total amount:</b>
+                                                    <span class="ml-2">₹{{ number_format($totalAmount) }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <b>Target met:</b>
+                                                    <span class="ml-2">{{ $targetMet }}</span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <b>Top amount:</b>
+                                                    <span class="ml-2">₹{{ $topAmount ? number_format($topAmount->amount) : 0 }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach    
+                        </div>
+                    @else
+                        <p>No campaigns found!</p>
+                    @endif
                 </div>
             </div>
         </div>

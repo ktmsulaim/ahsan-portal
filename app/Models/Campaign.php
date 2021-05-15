@@ -17,6 +17,11 @@ class Campaign extends Model
         return $query->where('active', 1);
     }
 
+    public function scopeEnabled($query)
+    {
+        return $query->where('status', 1);
+    }
+
     public function sponsors()
     {
         return $this->hasMany(Sponsor::class);
@@ -38,19 +43,27 @@ class Campaign extends Model
         }
     }
 
-    public function totalAmount()
+    public function totalAmount($mode = 'all')
     {
         if($this->sponsors()->exists()) {
-            return $this->sponsors->sum('amount');
+            if($mode == 'all') {
+                return $this->sponsors->sum('amount');
+            } elseif($mode == 'received') {
+                return $this->sponsors()->where('amount_received', 1)->sum('amount');
+            }
         } else {
             return 0;
         }
     }
 
-    public function totalAmountPercentage()
+    public function totalAmountPercentage($mode =  'all')
     {
-        if($this->totalAmount() > 0) {
-            return ($this->totalAmount() * 100) / $this->target;
+        if($this->totalAmount($mode) > 0) {
+            if($mode == 'all') {
+                return ($this->totalAmount($mode) * 100) / $this->target;
+            } elseif($mode == 'received') {
+                return ($this->totalAmount('received') * 100) / $this->totalAmount('all');
+            }
         } else {
             return 0;
         }
@@ -65,5 +78,10 @@ class Campaign extends Model
         } else {
             return 0;
         }
+    }
+
+    public static function current()
+    {
+        return self::active()->first();
     }
 }

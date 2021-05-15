@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\UsersImport;
+use App\Models\Campaign;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -109,7 +110,8 @@ class AdminUsersController extends Controller
 
     public function show(User $user)
     {
-        return view('admin.members.view', compact('user'));
+        $campaigns = Campaign::orderBy('id', 'desc')->get();
+        return view('admin.members.view', compact('user', 'campaigns'));
     }
 
     public function edit(User $user)
