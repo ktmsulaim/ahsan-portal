@@ -12,16 +12,20 @@ class LetterpadPrintController extends Controller
     {
         $donor = $request->get('name_in_lang');
         $amount = $request->get('amount_in_lang');
+        $ref = $sponsor->refNo();
+        $date = $sponsor->created_at->format('d-m-Y');
         
         $pdf = LaravelMpdf::loadView('letterpad.print', [
             'donor' => $donor,
-            'amount' => $amount
+            'amount' => $amount,
+            'ref' => $ref,
+            'date' => $date
         ], [], [
             'default_font_size'    => '10',
 	        'default_font'         => 'baloo_chettan',
             'margin_left'          => 15,
             'margin_right'         => 15,
-            'margin_top'           => 110,
+            'margin_top'           => 80,
         ]);
 
 

@@ -2,6 +2,7 @@
 <html lang="ml">
 
 <head>
+    <title>{{ $donor }} - Ahsan | Darul Hasanath Islamic College</title>
     <meta charset="utf-8">
     <style>
         body {
@@ -9,13 +10,29 @@
             background-image-resize: 6;
             background-position: left top;
         }
+        .ref {
+            padding-left: 55px;
+            font-size: 18px;
+            font-style: italic;
+        }
+
+        .date {
+            text-align: right;
+            margin-top: -30px;
+            padding-right: 50px;
+            font-size: 18px;
+        }
 
     </style>
 </head>
 
 <body>
-    <div class="content">
-        <p>ബഹുമാനപ്പെട്ട  <span style="color: red">{{ $donor }}</span>  അവർകൾക്ക്,</p>
+    <div class="ref-date">
+        <div class="ref" style="float: left;">{{ $ref }}</div>
+        <div class="date" style="float: right">{{ $date }}</div>
+    </div>
+    <div style="margin-top: 100px" class="content">
+        <p>ബഹുമാനപ്പെട്ട &nbsp; &nbsp;<span style="color: red; margin-left: 5px">{{ $donor }}</span> &nbsp; &nbsp;അവർകൾക്ക്,</p>
 
         <p>ക്ഷേമവും സൗഖ്യവും നേരുന്നു....</p>
 
