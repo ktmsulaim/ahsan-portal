@@ -114,9 +114,11 @@ class User extends Authenticatable
         ->first();
     }
 
-    public static function toppers($count = 10)
+    public static function toppers($count = 10, $campaign = null)
     {
-        $campaign = Campaign::active()->first();
+        if(!$campaign) {
+            $campaign = Campaign::active()->first();
+        }
 
         return DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
         ->join("users", 'sponsors.user_id', '=', 'users.id')
@@ -125,5 +127,20 @@ class User extends Authenticatable
         ->groupBy('users.id')
         ->take($count)
         ->get();
+    }
+
+    public static function topOfBatch($batch, $campaign = null)
+    {
+        if(!$campaign) {
+            $campaign = Campaign::active()->first();
+        }
+
+        return DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
+        ->join("users", 'sponsors.user_id', '=', 'users.id')
+        ->where('sponsors.campaign_id', $campaign->id)
+        ->where('users.batch', $batch)
+        ->orderBy("total_amount", "desc")
+        ->groupBy('users.id')
+        ->first();
     }
 }

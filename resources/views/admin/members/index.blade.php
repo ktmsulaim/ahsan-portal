@@ -163,7 +163,8 @@
                         data: 'url',
                         render: function(data) {
                             return `<a class="btn btn-sm" href="${data.show}"><span class="material-icons">visibility</span></a><a class="btn btn-sm" href="${data.edit}"><span class="material-icons">create</span></a>`;
-                        }
+                        },
+                        orderable: false
                     }
                 ]
             })

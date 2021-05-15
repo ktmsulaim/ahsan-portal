@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\LetterpadPrintController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SponsorController;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
@@ -65,4 +66,12 @@ Route::middleware('admin')->group(function(){
      * ---------------------------------------------------------------------
      */
     Route::get('/sponsors/{sponsor}/print/', [LetterpadPrintController::class, 'print'])->name('admin.sponsors.letterpad.print');
+
+     /**
+     * ---------------------------------------------------------------------
+     * Reports
+     * ---------------------------------------------------------------------
+     */
+    Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports.index');
+    Route::get('/reports/show', [ReportController::class, 'show'])->name('admin.reports.show');
 });

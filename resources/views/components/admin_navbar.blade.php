@@ -26,8 +26,8 @@
                         </a>
                     </li>
                    
-                    <li class="sidebar-menu-item {{ Request::url() == route('admin.index') ? 'active' : '' }}">
-                        <a class="sidebar-menu-button" href="ui-modals.html">
+                    <li class="sidebar-menu-item {{ Request::is('admin/reports*') ? 'active' : '' }}">
+                        <a class="sidebar-menu-button" href="{{ route('admin.reports.index') }}">
                             <i
                                 class="sidebar-menu-icon sidebar-menu-icon--left material-icons">insert_drive_file</i>
                             <span class="sidebar-menu-text">Reports</span>
