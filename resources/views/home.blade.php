@@ -13,7 +13,11 @@
 <div class="row">
     <div class="col-md-12">
         @if ($campaign)
-            <h4>{{ $campaign->name }} <br> <small>Summary</small></h4>
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h4>{{ $campaign->name }} <br> <small>Summary</small></h4>
+
+                @include('components.user.add_sponsor')
+            </div>
 
             <div class="row card-group-row">
                 <div class="col-lg-4 col-md-6 card-group-row__col">

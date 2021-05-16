@@ -37,7 +37,7 @@ class AdminController extends Controller
         $currentPassword = $request->get('current_password');
 
         if(!Hash::check($currentPassword, $admin->password)) {
-            Toastr::error('Current password is not valid', 'Password mismatch');
+            Toastr::warning('Current password is not valid', 'Password mismatch');
             return Redirect::back();
         }
 

@@ -28,14 +28,20 @@
             <h1 class="h4 mb-1">{{ $user->name }}</h1>
             <p class="text-muted">{{ $user->email }}</p>
             <p>{{ $user->batch }}</p>
-            <div class="text-muted d-flex align-items-center">
+            <div class="mb-3 text-muted d-flex align-items-center">
                 <i class="material-icons mr-1">location_on</i>
                 <div class="flex">{{ $user->address1 }}</div>
             </div>
-            <div class="text-muted d-flex align-items-center">
+            <div class="my-3 text-muted d-flex align-items-center">
                 <i class="material-icons mr-1">local_phone</i>
                 <div class="flex"><a href="tel:{{ $user->phone_personal }}">{{ $user->phone_personal }}</a></div>
             </div>
+            
+            <div class="text-muted d-flex align-items-center">
+                <i class="material-icons mr-1">alarm</i>
+                <div class="flex">Last login: {{ optional($user->last_login)->diffForHumans() }}</div>
+            </div>
+
         </div>
         <div class="col-lg-9">
             <div class="tab-content">

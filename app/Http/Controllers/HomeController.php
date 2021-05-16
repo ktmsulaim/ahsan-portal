@@ -6,6 +6,7 @@ use App\Models\Campaign;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
@@ -84,5 +85,32 @@ class HomeController extends Controller
             $user->save();
 
         }
+    }
+
+    public function changePassword()
+    {
+        return view('user.change_password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|confirmed'
+        ]);
+        
+        $user = User::find(auth()->id());
+        $currentPassword = $request->get('current_password');
+
+        if(!Hash::check($currentPassword, $user->password)) {
+            Toastr::warning('Current password is not valid', 'Password mismatch');
+            return Redirect::back();
+        }
+
+        $user->password = $request->get('password');
+        $user->save();
+
+        Toastr::success('Password has been changed', 'Password changed');
+        return Redirect::route('home');
     }
 }

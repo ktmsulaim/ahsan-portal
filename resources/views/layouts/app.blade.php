@@ -93,6 +93,7 @@
                             <li class="nav-item {{ Request::is('home') ? 'active' : '' }}">
                                 <a href="{{ route('home') }}" class="nav-link">Dashboard</a>
                             </li>
+
                             <li class="nav-item {{ Request::is('profile') ? 'active' : '' }}">
                                 <a href="{{ route('profile') }}" class="nav-link">Profile</a>
                             </li>
@@ -101,6 +102,13 @@
                                 <a href="{{ route('user.campaigns.index') }}" class="nav-link">Campaigns</a>
                             </li>
                             
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Account</a>
+                                <div class="dropdown-menu" style="display: none;">
+                                    <a class="dropdown-item" href="{{ route('user.changePassword') }}">Change password</a>
+                                    <a class="dropdown-item" href="{{ route('user.logout') }}">Logout</a>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LetterpadPrintController;
+use App\Http\Controllers\MembershipApplyController;
 use App\Http\Controllers\UserCampaignsController;
 use App\Http\Controllers\UserSponsorsController;
 use Illuminate\Support\Facades\Route;
@@ -21,9 +22,20 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Auth::routes(['register' => false]);
+
+/*
+|--------------------------------------------------------------------------
+| Apply for membership
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/membership/apply', [MembershipApplyController::class, 'apply'])->name('membership.apply');
+Route::post('/membership/store', [MembershipApplyController::class, 'store'])->name('membership.store');
+Route::get('/membership/status', [MembershipApplyController::class, 'status'])->name('membership.status');
+Route::post('/membership/status', [MembershipApplyController::class, 'getStatus'])->name('membership.getStatus');
 
 
 Route::middleware(['auth'])->group(function(){
@@ -31,6 +43,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
     Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
     Route::post('/profile/update', [HomeController::class, 'updateProfile'])->name('profile.update');
+
+    Route::get('/changePassword', [HomeController::class, 'changePassword'])->name('user.changePassword');
+    Route::post('/changePassword', [HomeController::class, 'updatePassword'])->name('user.updatePassword');
 
 /*
 |--------------------------------------------------------------------------
@@ -53,3 +68,4 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/sponsors/{sponsor}/letterpad/print', [LetterpadPrintController::class, 'print'])->name('user.sponsors.letterpad.print');
 
 });
+
