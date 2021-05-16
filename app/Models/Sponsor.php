@@ -32,6 +32,30 @@ class Sponsor extends Model
                 ->groupBy('users.batch')
                 ->first();
     }
+    
+    public static function batchWiseAmount($camp)
+    {
+        // return DB::table('users')
+        //         ->select("users.batch", DB::raw('SUM(sponsors.amount) as amount'))
+        //         ->leftJoin('sponsors', 'users.id', '=', 'sponsors.user_id')
+        //         ->where('sponsors.campaign_id', $camp)
+        //         ->groupBy('users.batch')
+        //         ->orderBy('amount', 'desc')
+        //         ->get();
+        $batches = User::select('batch')->groupBy('batch')->orderBy('batch')->get();
+
+        $data = [];
+
+        if($batches) {
+            foreach ($batches as $key => $batch) {
+                $batchAmount = collect(self::totalAmountByBatch($camp, $batch->batch));
+                array_push($data, $batchAmount && count($batchAmount) ? $batchAmount : ['batch' => $batch->batch, 'amount' => 0]);
+            }
+
+            $data = collect($data)->sortBy('amount')->reverse()->toArray();
+            return $data;
+        }
+    }
 
     public function refNo()
     {

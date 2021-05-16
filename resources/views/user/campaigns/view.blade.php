@@ -216,26 +216,7 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-6 card-group-row__col">
-            <div class="card card-group-row__card">
-                <div class="card-header">
-                    <div class="card-header__title">Batches</div>
-                </div>
-                <div class="card-body table-responsive">
-                    <table class="table table-bordered">
-                        <tbody>
-                            @for ($i = 1; $i <= 7; $i++)
-                                @php
-                                    $batchTotal = \App\Models\Sponsor::totalAmountByBatch($campaign->id, 'Batch ' . $i);
-                                @endphp
-                                <tr>
-                                    <th width="130">Batch {{ $i }}</th>
-                                    <td>₹{{ $batchTotal ? number_format($batchTotal->amount) : 0 }}</td>
-                                </tr>
-                            @endfor
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            @include('components.batch_wise', ['campaign' => $campaign])
         </div>
 
     </div>

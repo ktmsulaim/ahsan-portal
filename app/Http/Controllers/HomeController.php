@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campaign;
+use App\Models\Sponsor;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -21,8 +22,9 @@ class HomeController extends Controller
     {
         $campaign = Campaign::current();
         $toppers = User::toppers();
+        $batches = Sponsor::batchWiseAmount($campaign->id);
         
-        return view('home', compact('campaign', 'toppers'));
+        return view('home', compact('campaign', 'toppers', 'batches'));
     }
 
     public function profile()
