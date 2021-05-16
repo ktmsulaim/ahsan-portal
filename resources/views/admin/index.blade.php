@@ -49,7 +49,7 @@
         <div class="card card-group-row__card card-body flex-row align-items-center">
             <div><i class="material-icons text-success icon-48pt mr-2">check_circle</i></div>
             <div class="flex">
-                <div class="h5 mb-0">{{ $activeCamp->name }}</div>
+                <div class="h5 mb-0">{{ $activeCamp ? $activeCamp->name : null }}</div>
                 <div class="text-muted mt-1">Active campaign</div>
             </div>
         </div>
