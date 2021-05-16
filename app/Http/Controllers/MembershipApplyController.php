@@ -35,7 +35,7 @@ class MembershipApplyController extends Controller
             'address2' => '',
             'phone_home' => '',
             'phone_personal' => 'required',
-            'marital_status' => 'boolean'
+            'marital_status' => 'required'
         ]);
 
         $user = UserApplication::create($request->except('_token', 'password_confirmation'));

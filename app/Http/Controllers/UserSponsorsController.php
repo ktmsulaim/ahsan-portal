@@ -51,8 +51,6 @@ class UserSponsorsController extends Controller
     {
 
         $request->validate([
-            'user_id' => 'required',
-            'campaign_id' => 'required',
             'name' => 'required',
             'place' => 'required',
             'phone' => 'required',

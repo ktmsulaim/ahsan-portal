@@ -15,7 +15,7 @@
                     <form id="sponsorEditForm" action="{{ route('user.sponsors.update', $sponsor->id) }}" method="POST">
                         @csrf
                         @method('PATCH')
-
+                        
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">

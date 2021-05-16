@@ -49,7 +49,7 @@
                 <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
                     <div class="flex">
                         <div class="card-header__title text-muted mb-2 d-flex">Target <span
-                                class="badge badge-warning ml-2">{{ $campaign->totalAmountPercentage() }}%</span></div>
+                                class="badge badge-warning ml-2">{{ number_format($campaign->totalAmountPercentage(), 2) }}%</span></div>
                         <span class="h4 m-0">₹{{ number_format($campaign->totalAmount()) }} <small class="text-muted"> /
                                 ₹{{ number_format($campaign->target) }}</small> </span>
                     </div>

@@ -229,7 +229,8 @@
                                         <label for="marital_status">Marital status</label>
                                         <div>
                                             <div class="custom-control custom-checkbox-toggle custom-control-inline mr-1">    
-                                                <input type="checkbox" name="marital_status" id="marital_status" class="custom-control-input" value=false>
+                                                <input type="hidden" name="marital_status" id="marital_status_input" value="0">
+                                                <input data-target="#marital_status_input" type="checkbox" id="marital_status" class="custom-control-input">
                                                 <label for="marital_status" class="custom-control-label"></label>
                                             </div>
                                         </div>
