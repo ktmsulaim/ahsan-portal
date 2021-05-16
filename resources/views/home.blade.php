@@ -27,7 +27,7 @@
                                 <div class="card-header__title text-muted mb-2 d-flex">
                                     Your target
                                     @if (!auth()->user()->targetMet())
-                                        <span class="badge badge-warning ml-2">{{ auth()->user()->totalAmountPercentage() }}%</span>
+                                        <span class="badge badge-warning ml-2">{{ number_format(auth()->user()->totalAmountPercentage(), 2) }}%</span>
                                     @endif
                                 </div>
                                 @if (!auth()->user()->targetMet())    

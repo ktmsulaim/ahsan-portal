@@ -105,7 +105,7 @@ class User extends Authenticatable
 
     public function targetMet()
     {
-        $target = $this->camp->individualTarget();
+        $target = $this->camp->individualTarget('');
         $amount = $this->totalAmount();
 
         return $amount >= $target;
@@ -170,30 +170,34 @@ class User extends Authenticatable
     public static function toppers($count = 10, $campaign = null)
     {
         if(!$campaign) {
-            $campaign = Campaign::active()->first();
+            $campaign = (new self)->camp;
         }
 
-        return DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
-        ->join("users", 'sponsors.user_id', '=', 'users.id')
-        ->where('sponsors.campaign_id', $campaign->id)
-        ->orderBy("total_amount", "desc")
-        ->groupBy('users.id')
-        ->take($count)
-        ->get();
+        if($campaign) {
+            return DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
+            ->join("users", 'sponsors.user_id', '=', 'users.id')
+            ->where('sponsors.campaign_id', $campaign->id)
+            ->orderBy("total_amount", "desc")
+            ->groupBy('users.id')
+            ->take($count)
+            ->get();
+        }
     }
 
     public static function topOfBatch($batch, $campaign = null)
     {
         if(!$campaign) {
-            $campaign = Campaign::active()->first();
+            $campaign = (new self)->camp;
         }
 
-        return DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
+        if($campaign) {
+            return DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
         ->join("users", 'sponsors.user_id', '=', 'users.id')
         ->where('sponsors.campaign_id', $campaign->id)
         ->where('users.batch', $batch)
         ->orderBy("total_amount", "desc")
         ->groupBy('users.id')
         ->first();
+        }
     }
 }
