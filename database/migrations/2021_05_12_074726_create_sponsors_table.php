@@ -15,8 +15,8 @@ class CreateSponsorsTable extends Migration
     {
         Schema::create('sponsors', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->unsigned()->index();
-            $table->integer('campaign_id')->unsigned()->index();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('campaign_id');
             $table->string('name');
             $table->string('place');
             $table->string('phone');
