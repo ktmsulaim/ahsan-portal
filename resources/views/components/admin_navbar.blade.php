@@ -11,12 +11,24 @@
                             <span class="sidebar-menu-text">Dashboard</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item {{ Request::is('admin/members*') ? 'active' : '' }}">
-                        <a class="sidebar-menu-button" href="{{ route('admin.users.index') }}">
-                            <i
-                                class="sidebar-menu-icon sidebar-menu-icon--left material-icons">person</i>
+                    <li class="sidebar-menu-item {{ Request::is('admin/members*') ? 'active open' : '' }}">
+                        <a class="sidebar-menu-button collapsed" data-toggle="collapse" href="#members_menu" aria-expanded="false">
+                            <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">person</i>
                             <span class="sidebar-menu-text">Members</span>
+                            <span class="ml-auto sidebar-menu-toggle-icon"></span>
                         </a>
+                        <ul class="sidebar-submenu collapse" id="members_menu" style="">
+                            <li class="sidebar-menu-item {{ Request::is('admin/members*') && !Request::is('admin/members/applications*') ? 'active' : '' }}">
+                                <a class="sidebar-menu-button" href="{{ route('admin.users.index') }}">
+                                    <span class="sidebar-menu-text">All Members</span>
+                                </a>
+                            </li>
+                        <li class="sidebar-menu-item {{ Request::is('admin/members/applications*') ? 'active' : '' }}">
+                                <a class="sidebar-menu-button" href="{{ route('admin.users.applications.index') }}">
+                                    <span class="sidebar-menu-text">Applications</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="sidebar-menu-item {{ Request::is('admin/campaigns*') ? 'active' : '' }}">
                         <a class="sidebar-menu-button" href="{{ route('admin.campaigns.index') }}">

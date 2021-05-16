@@ -12,6 +12,8 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\LetterpadPrintController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SponsorController;
+use App\Http\Controllers\UserApplicationController;
+use App\Models\UserApplication;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -35,6 +37,15 @@ Route::middleware('admin')->group(function(){
      * Members management
      * ---------------------------------------------------------------------
      */
+
+     // Applications
+    Route::get('/members/applications', [UserApplicationController::class, 'index'])->name('admin.users.applications.index');
+    Route::get('/members/applications/ajax/{status}', [UserApplicationController::class, 'dtIndex'])->name('admin.users.applications.dtIndex');
+
+    Route::get('/members/applications/{user_application}', [UserApplicationController::class, 'show'])->name('admin.users.applications.show');
+    Route::post('/members/applications/{user_application}', [UserApplicationController::class, 'updateStatus'])->name('admin.users.applications.updateStatus');
+
+    // All members
     Route::get('/members', [AdminUsersController::class, 'index'])->name('admin.users.index');
     Route::get('/members/ajax/{batch}', [AdminUsersController::class, 'dtIndex'])->name('admin.users.dtIndex');
     Route::get('/members/create', [AdminUsersController::class, 'create'])->name('admin.users.create');
@@ -50,6 +61,7 @@ Route::middleware('admin')->group(function(){
     
     Route::resource('campaigns', CampaignController::class, ['as' => 'admin']);
     
+
     
     /**
      * ---------------------------------------------------------------------

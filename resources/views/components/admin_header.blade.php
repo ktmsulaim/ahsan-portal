@@ -19,7 +19,7 @@
                     <span>Ahsan</span>
                 </a>
 
-                <form class="search-form d-none d-sm-flex flex" action="index.html">
+                <form class="search-form d-none d-sm-flex flex" action="">
                     <button class="btn" type="submit"><i class="material-icons">search</i></button>
                     <input type="text" class="form-control" placeholder="Search">
                 </form>
