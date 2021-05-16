@@ -15,7 +15,8 @@ class User extends Authenticatable
 
     protected $camp;
 
-    public function __construct() {
+    public function __construct(array $attributes = array()) {
+        parent::__construct($attributes);
         $this->camp = Campaign::current();
     }
 
