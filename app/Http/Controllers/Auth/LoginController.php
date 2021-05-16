@@ -48,4 +48,8 @@ class LoginController extends Controller
 
         return Redirect::intended(route('home'));
     }
+
+    protected function loggedOut(Request $request) {
+        return redirect('/login');
+    }
 }

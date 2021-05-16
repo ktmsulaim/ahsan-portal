@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sponsor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Meneses\LaravelMpdf\Facades\LaravelMpdf;
 
@@ -13,13 +14,14 @@ class LetterpadPrintController extends Controller
         $donor = $request->get('name_in_lang');
         $amount = $request->get('amount_in_lang');
         $ref = $sponsor->refNo();
-        $date = $sponsor->created_at->format('d-m-Y');
+        $date = Carbon::now()->format('d-m-Y');
         
         $pdf = LaravelMpdf::loadView('letterpad.print', [
             'donor' => $donor,
             'amount' => $amount,
             'ref' => $ref,
-            'date' => $date
+            'date' => $date,
+            'sponsor' => $sponsor
         ], [], [
             'default_font_size'    => '10',
 	        'default_font'         => 'baloo_chettan',

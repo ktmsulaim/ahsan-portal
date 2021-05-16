@@ -81,7 +81,7 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('admin.index') }}"><i
                                     class="material-icons">dvr</i> Dashboard</a>
-                            <a class="dropdown-item" href="edit-account.html"><i class="material-icons">edit</i>
+                            <a class="dropdown-item" href="{{ route('admin.changePassword') }}"><i class="material-icons">edit</i>
                                 Change password</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('admin.logout') }}"><i

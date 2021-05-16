@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LetterpadPrintController;
+use App\Http\Controllers\UserCampaignsController;
+use App\Http\Controllers\UserSponsorsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,8 +25,31 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function(){
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
+    Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
+    Route::post('/profile/update', [HomeController::class, 'updateProfile'])->name('profile.update');
+
+/*
+|--------------------------------------------------------------------------
+| Campaigns
+|--------------------------------------------------------------------------
+*/
+    Route::get('/campaigns', [UserCampaignsController::class, 'index'])->name('user.campaigns.index');
+    Route::get('/campaigns/{campaign}', [UserCampaignsController::class, 'show'])->name('user.campaigns.show');
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Sponsors
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/campaigns/{campaign}/sponsors', [UserCampaignsController::class, 'sponsors'])->name('user.sponsors.index');
+    Route::post('/sponsors', [UserSponsorsController::class, 'store'])->name('user.sponsors.store');
+    Route::get('/sponsors/{sponsor}', [UserSponsorsController::class, 'show'])->name('user.sponsors.show');
+    Route::get('/sponsors/{sponsor}/edit', [UserSponsorsController::class, 'edit'])->name('user.sponsors.edit');
+    Route::patch('/sponsors/{sponsor}', [UserSponsorsController::class, 'update'])->name('user.sponsors.update');
+    Route::get('/sponsors/{sponsor}/letterpad/print', [LetterpadPrintController::class, 'print'])->name('user.sponsors.letterpad.print');
 
 });

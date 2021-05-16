@@ -45,21 +45,10 @@
             // Input checkbox value
             
             $('input[type="checkbox"]').change(function(e) {
-                let target = $(this).data('target');
-                target = $(target);
-
-                let value = 0;
-
                 if($(this).is(':checked')) {
                     $(this).val(true);
-                    value = 1;
                 } else {
                     $(this).val(false);
-                    value = 0;
-                }
-
-                if(target.length) {
-                    target.val(value);
                 }
             })
 

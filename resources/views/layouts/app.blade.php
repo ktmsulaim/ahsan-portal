@@ -1,83 +1,123 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@include('components.user.header')
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+<div class="preloader"></div>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+<!-- Header Layout -->
+<div class="mdk-header-layout js-mdk-header-layout">
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- Header -->
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <div id="header" class="mdk-header bg-dark js-mdk-header m-0" data-fixed>
+        <div class="mdk-header__content">
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-</head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            <div class="navbar navbar-expand-sm navbar-main navbar-dark bg-dark pr-0 pr-0" id="navbar" data-primary>
+                <div class="container-fluid p-0">
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                    <!-- Navbar toggler -->
 
-                    </ul>
+                     <!-- Navbar Brand -->
+                    <a href="{{ route('home') }}" class="navbar-brand ">
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+                     <img src="{{ asset('img/icon.png') }}" alt="Ahsan logo" width="35">
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+                        <span>Ahsan</span>
+                    </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                    <ul class="nav navbar-nav d-none d-sm-flex border-left navbar-height align-items-center">
+                        <li class="nav-item dropdown">
+                            <a href="#account_menu" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                                data-caret="false">
+                                <span class="mr-1 d-flex-inline">
+                                    <span class="text-light">{{ auth()->user()->name }}</span>
+                                </span>
+                                <img src="{{ auth()->user()->photo() }}" class="rounded-circle" width="32"
+                                    alt="User photo">
+                            </a>
+                            <div id="account_menu" class="dropdown-menu dropdown-menu-right">
+                                <div class="dropdown-item-text dropdown-item-text--lh">
+                                    <div><strong>{{ auth()->user()->name }}</strong></div>
+                                    <div class="text-muted">{{ auth()->user()->email }}</div>
                                 </div>
-                            </li>
-                        @endguest
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('home') }}"><i class="material-icons">dvr</i>
+                                    Dashboard</a>
+                                <a class="dropdown-item" href="{{ route('profile') }}"><i
+                                        class="material-icons">edit</i> Edit account</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('user.logout') }}"><i
+                                        class="material-icons">exit_to_app</i> Logout</a>
+                            </div>
+                        </li>
                     </ul>
+
                 </div>
             </div>
-        </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        </div>
     </div>
-</body>
-</html>
+
+    <!-- // END Header -->
+
+    <!-- Header Layout Content -->
+    <div class="mdk-header-layout__content page">
+
+        <div class="page__header">
+            <div class="container-fluid page__heading-container">
+                <div class="page__heading d-flex align-items-center">
+                    <div class="flex">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="material-icons icon-20pt">home</i> <span class="ml-2">Home</span></a></li>
+
+                                @yield('breadcrumb')
+                                {{-- <li class="breadcrumb-item">Blank</li>
+                                <li class="breadcrumb-item active" aria-current="page">Page</li> --}}
+                            </ol>
+                        </nav>
+                        {{-- <h1 class="m-0">{{ $title }}</h1> --}}
+                    </div>
+                </div>
+            </div>
+        </div> <!-- // END page__header -->
+
+        <div class="page__header page__header-nav">
+            <div class="container-fluid page__container">
+                <div class="navbar navbar-secondary navbar-light navbar-expand-sm p-0">
+                    <button class="navbar-toggler navbar-toggler-right" data-toggle="collapse"
+                        data-target="#navbarsExample03" type="button">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="navbar-collapse collapse" id="navbarsExample03">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item {{ Request::is('home') ? 'active' : '' }}">
+                                <a href="{{ route('home') }}" class="nav-link">Dashboard</a>
+                            </li>
+                            <li class="nav-item {{ Request::is('profile') ? 'active' : '' }}">
+                                <a href="{{ route('profile') }}" class="nav-link">Profile</a>
+                            </li>
+                            
+                            <li class="nav-item {{ Request::is('campaigns*') ? 'active' : '' }}">
+                                <a href="{{ route('user.campaigns.index') }}" class="nav-link">Campaigns</a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid page__container">
+            @yield('content')
+        </div>
+
+    </div>
+    <!-- // END header-layout__content -->
+
+</div>
+<!-- // END header-layout -->
+
+
+
+
+@include('components.footer')

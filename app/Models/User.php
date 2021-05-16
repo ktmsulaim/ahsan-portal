@@ -13,6 +13,12 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $camp;
+
+    public function __construct() {
+        $this->camp = Campaign::current();
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -84,6 +90,51 @@ class User extends Authenticatable
     public function sponsors()
     {
         return $this->hasMany(Sponsor::class);
+    }
+
+    public function totalAmount()
+    {
+        if($this->camp && $this->sponsors()->exists()) {
+            return $this->sponsors()->where('campaign_id', $this->camp->id)->sum('amount');
+        } else {
+            return 0;
+        }
+    }
+
+    public function targetMet()
+    {
+        $target = $this->camp->individualTarget();
+        $amount = $this->totalAmount();
+
+        return $amount >= $target;
+    }
+
+    public function totalAmountPercentage()
+    {
+        $target = $this->camp ? $this->camp->individualTarget('') : 0;
+        $total = $this->totalAmount();
+
+        if($target > 0 && $total > 0) {
+            return ($total * 100) / $target;
+        } else {
+            return 0;
+        }
+    }
+
+    public function totalAmountReceived($type = 'amount')
+    {
+        if($this->sponsors()->exists()) {
+            $total = $this->totalAmount();
+            $received = $this->sponsors()->where(['campaign_id' => $this->camp->id, 'amount_received' => 1])->sum('amount');
+
+            if($type == 'amount') {
+                return $received;
+            } elseif($type == 'percentage') {
+                return ($received * 100) / $total;
+            }
+        } else {
+            return 0;
+        }
     }
 
     public static function usersWithTargetMet($target)

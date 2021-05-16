@@ -27,6 +27,9 @@ Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showRese
 Route::middleware('admin')->group(function(){
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
+    Route::get('/changePassword', [AdminController::class, 'changePassword'])->name('admin.changePassword');
+    Route::post('/changePassword', [AdminController::class, 'updatePassword'])->name('admin.updatePassword');
+
     /**
      * ---------------------------------------------------------------------
      * Members management
