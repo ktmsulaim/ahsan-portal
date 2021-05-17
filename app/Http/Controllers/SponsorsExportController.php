@@ -21,14 +21,17 @@ class SponsorsExportController extends Controller
         $user_id = $request->has('user_id') ? $request->get('user_id') : null;
         
         if($mode == 'member' || $mode == 'admin.member') {
-            $user = auth()->user()->name;
-
-            if(!$user && $request->has('user_id')) {
+            if($mode == 'member' && auth()->check()) {
+                $user = auth()->user()->name;
+            } elseif($mode == 'admin.member' && $request->has('user_id')) {
                 $user = User::find($request->get('user_id'));
                 $user = $user->name;
             }
 
-            $name .= ' | ' . $user;
+            if($user) {
+                $name .= ' | ' . $user;
+            }
+
         }
         
         return Excel::download(new SponsorsExport($campaign, $mode, $user_id), $name .'.xlsx');
