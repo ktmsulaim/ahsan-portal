@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LetterpadPrintController;
 use App\Http\Controllers\MembershipApplyController;
+use App\Http\Controllers\SponsorsExportController;
 use App\Http\Controllers\UserCampaignsController;
 use App\Http\Controllers\UserSponsorsController;
 use Illuminate\Support\Facades\Route;
@@ -66,6 +67,8 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/sponsors/{sponsor}/edit', [UserSponsorsController::class, 'edit'])->name('user.sponsors.edit');
     Route::patch('/sponsors/{sponsor}', [UserSponsorsController::class, 'update'])->name('user.sponsors.update');
     Route::get('/sponsors/{sponsor}/letterpad/print', [LetterpadPrintController::class, 'print'])->name('user.sponsors.letterpad.print');
+
+    Route::get('/campaign/{campaign}/sponsors/export', [SponsorsExportController::class, 'export'])->name('user.sponsors.export');
 
 });
 

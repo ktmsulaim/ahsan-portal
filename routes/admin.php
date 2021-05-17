@@ -12,6 +12,7 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\LetterpadPrintController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SponsorController;
+use App\Http\Controllers\SponsorsExportController;
 use App\Http\Controllers\UserApplicationController;
 use App\Models\UserApplication;
 
@@ -58,6 +59,8 @@ Route::middleware('admin')->group(function(){
     Route::post('/members/import', [AdminUsersController::class, 'import'])->name('admin.users.import');
     
     Route::post('/members/bulkupdate/batch', [AdminUsersController::class, 'bulkupdate'])->name('admin.users.bulkupdate');
+    
+    Route::get('/campaigns/{campaign}/sponsors/export', [SponsorsExportController::class, 'export'])->name('admin.sponsors.export');
     
     Route::resource('campaigns', CampaignController::class, ['as' => 'admin']);
     

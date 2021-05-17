@@ -224,8 +224,14 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-header__title">Sponsors</div>
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <div class="card-header__title m-0">Sponsors</div>
+                    <div>
+                        <form action="{{ route('user.sponsors.export', $campaign->id) }}" method="get">
+                            <input type="hidden" name="mode" value="member">
+                            <button class="btn btn-info"><span class="material-icons">import_export</span> Export</button>
+                        </form>
+                    </div>
                 </div>
                 <div class="card-body table-responsive">
                     <table id="sponsorsTable" class="table">
