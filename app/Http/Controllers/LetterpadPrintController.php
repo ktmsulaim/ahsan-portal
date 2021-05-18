@@ -23,8 +23,8 @@ class LetterpadPrintController extends Controller
             'date' => $date,
             'sponsor' => $sponsor
         ], [], [
-            'default_font_size'    => '10',
-	        'default_font'         => 'baloo_chettan',
+            'default_font_size'    => '12',
+	        'default_font'         => 'rachana',
             'margin_left'          => 15,
             'margin_right'         => 15,
             'margin_top'           => 80,

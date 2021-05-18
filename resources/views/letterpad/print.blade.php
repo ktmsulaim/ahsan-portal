@@ -12,15 +12,16 @@
         }
         .ref {
             padding-left: 55px;
-            font-size: 18px;
+            font-size: 20px;
             font-style: italic;
+            padding-top: 4px;
         }
 
         .date {
             text-align: right;
-            margin-top: -30px;
-            padding-right: 50px;
-            font-size: 18px;
+            margin-top: -33px;
+            padding-right: 65px;
+            font-size: 20px;
         }
 
     </style>
@@ -31,7 +32,7 @@
         <div class="ref" style="float: left;">{{ $ref }}</div>
         <div class="date" style="float: right">{{ $date }}</div>
     </div>
-    <div style="margin-top: 100px" class="content">
+    <div style="margin-top: 65px" class="content">
         <p>ബഹുമാനപ്പെട്ട &nbsp; &nbsp;<span style="color: red; margin-left: 5px">{{ $donor ? $donor : $sponsor->name }}</span> &nbsp; &nbsp;അവർകൾക്ക്,</p>
 
         <p>ക്ഷേമവും സൗഖ്യവും നേരുന്നു....</p>

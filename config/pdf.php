@@ -32,6 +32,11 @@ return [
 			// 'I'  => 'ExampleFont-Italic.ttf',     // optional: italic font
 			// 'BI' => 'ExampleFont-Bold-Italic.ttf' // optional: bold-italic font
             'useOTL' => 0x80
+		],
+		'rachana' => [
+			'R' => 'RIT-Rachana-Regular.ttf',
+			'B' => 'RIT-Rachana-Bold.ttf',
+			'useOTL' => 0x80
 		]
 	]
 ];

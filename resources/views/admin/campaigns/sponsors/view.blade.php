@@ -98,30 +98,7 @@
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-header__title">Letterpad</div>
-                </div>
-                <div class="card-body">
-                    <p>Let the donor know our happiness. Send it today</p>
-                    <form target="_blank" action="{{ route('admin.sponsors.letterpad.print', $sponsor->id) }}" method="get">
-                        <div class="form-group">
-                            <select class="form-control" name="lang" id="lang" required>
-                                <option value="ml">Malayalam</option>
-                                <option value="ar" disabled>Arabic</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="name_in_lang" id="name_in_lang" class="form-control" placeholder="Name in selected language">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="amount_in_lang" id="amount_in_lang" class="form-control" placeholder="Amount in selected language">
-                        </div>
-
-                        <button class="btn btn-success">Print</button>
-                    </form>
-                </div>
-            </div>
+          @include('components.print_letterpad')
         </div>
     </div>
 @endsection
