@@ -15,7 +15,8 @@ class User extends Authenticatable
 
     protected $camp;
 
-    public function __construct(array $attributes = array()) {
+    public function __construct(array $attributes = array())
+    {
         parent::__construct($attributes);
         $this->camp = Campaign::current();
     }
@@ -96,7 +97,7 @@ class User extends Authenticatable
 
     public function totalAmount()
     {
-        if($this->camp && $this->sponsors()->exists()) {
+        if ($this->camp && $this->sponsors()->exists()) {
             return $this->sponsors()->where('campaign_id', $this->camp->id)->sum('amount');
         } else {
             return 0;
@@ -116,8 +117,8 @@ class User extends Authenticatable
         $target = $this->camp ? $this->camp->individualTarget('') : 0;
         $total = $this->totalAmount();
 
-        if($target > 0 && $total > 0) {
-            return ($total * 100) / $target;
+        if ($target > 0 && $total > 0) {
+            return $total > 0 ? ($total * 100) / $target : 0;
         } else {
             return 0;
         }
@@ -125,13 +126,13 @@ class User extends Authenticatable
 
     public function totalAmountReceived($type = 'amount')
     {
-        if($this->sponsors()->exists()) {
+        if ($this->sponsors()->exists()) {
             $total = $this->totalAmount();
             $received = $this->sponsors()->where(['campaign_id' => $this->camp->id, 'amount_received' => 1])->sum('amount');
 
-            if($type == 'amount') {
+            if ($type == 'amount') {
                 return $received;
-            } elseif($type == 'percentage') {
+            } elseif ($type == 'percentage') {
                 return ($received * 100) / $total;
             }
         } else {
@@ -143,61 +144,61 @@ class User extends Authenticatable
     {
         $campaign = Campaign::active()->first();
 
-       return DB::table('sponsors')->select("users.name", "users.id", DB::raw("SUM(sponsors.amount) as total_amount"))
-        ->join("users", 'sponsors.user_id', '=', 'users.id')
-        ->where('sponsors.campaign_id', $campaign->id)
-        ->orderBy("total_amount", "desc")
-        ->groupBy('users.id')
-        ->havingRaw('total_amount >= ' . $target)
-        ->get();
+        return DB::table('sponsors')->select("users.name", "users.id", DB::raw("SUM(sponsors.amount) as total_amount"))
+            ->join("users", 'sponsors.user_id', '=', 'users.id')
+            ->where('sponsors.campaign_id', $campaign->id)
+            ->orderBy("total_amount", "desc")
+            ->groupBy('users.id')
+            ->havingRaw('total_amount >= ' . $target)
+            ->get();
     }
 
 
     public static function usersWithTargetMetCount($target)
     {
-       return count(self::usersWithTargetMet($target));
+        return count(self::usersWithTargetMet($target));
     }
 
     public static function topAmountOfCampaign($campaign)
     {
         return DB::table('sponsors')->select("users.name", "users.id", "sponsors.amount")
-        ->join("users", 'sponsors.user_id', '=', 'users.id')
-        ->where('sponsors.campaign_id', $campaign)
-        ->orderBy("amount", "desc")
-        ->first();
+            ->join("users", 'sponsors.user_id', '=', 'users.id')
+            ->where('sponsors.campaign_id', $campaign)
+            ->orderBy("amount", "desc")
+            ->first();
     }
 
     public static function toppers($count = 10, $campaign = null)
     {
-        if(!$campaign) {
+        if (!$campaign) {
             $campaign = (new self)->camp;
         }
 
-        if($campaign) {
+        if ($campaign) {
             return DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
-            ->join("users", 'sponsors.user_id', '=', 'users.id')
-            ->where('sponsors.campaign_id', $campaign->id)
-            ->orderBy("total_amount", "desc")
-            ->groupBy('users.id')
-            ->take($count)
-            ->get();
+                ->join("users", 'sponsors.user_id', '=', 'users.id')
+                ->where('sponsors.campaign_id', $campaign->id)
+                ->orderBy("total_amount", "desc")
+                ->groupBy('users.id')
+                ->take($count)
+                ->get();
         }
     }
 
     public static function topOfBatch($batch, $campaign = null)
     {
-        if(!$campaign) {
+        if (!$campaign) {
             $campaign = (new self)->camp;
         }
 
-        if($campaign) {
+        if ($campaign) {
             return DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
-        ->join("users", 'sponsors.user_id', '=', 'users.id')
-        ->where('sponsors.campaign_id', $campaign->id)
-        ->where('users.batch', $batch)
-        ->orderBy("total_amount", "desc")
-        ->groupBy('users.id')
-        ->first();
+                ->join("users", 'sponsors.user_id', '=', 'users.id')
+                ->where('sponsors.campaign_id', $campaign->id)
+                ->where('users.batch', $batch)
+                ->orderBy("total_amount", "desc")
+                ->groupBy('users.id')
+                ->first();
         }
     }
 }
