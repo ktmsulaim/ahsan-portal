@@ -118,7 +118,7 @@ class User extends Authenticatable
         $total = $this->totalAmount();
 
         if ($target > 0 && $total > 0) {
-            return $total > 0 ? ($total * 100) / $target : 0;
+            return ($total * 100) / $target;
         } else {
             return 0;
         }
@@ -133,7 +133,7 @@ class User extends Authenticatable
             if ($type == 'amount') {
                 return $received;
             } elseif ($type == 'percentage') {
-                return ($received * 100) / $total;
+                return $total ? ($received * 100) / $total : 0;
             }
         } else {
             return 0;
