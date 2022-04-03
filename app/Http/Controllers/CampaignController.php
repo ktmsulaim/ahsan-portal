@@ -67,10 +67,10 @@ class CampaignController extends Controller
      */
     public function show(Campaign $campaign)
     {
-        $targetMetCount = User::usersWithTargetMetCount($campaign->individualTarget(''));
+        $targetMetCount = User::usersWithTargetMetCount($campaign->individualTarget(''), $campaign->id);
         $targetMetPercentage = $targetMetCount > 0 ? ($targetMetCount * 100) / User::count() : 0;
         $topAmount = User::topAmountOfCampaign($campaign->id);
-        $toppers = User::toppers();
+        $toppers = User::toppers(10, $campaign);
 
         return view('admin.campaigns.view', compact('campaign', 'targetMetCount', 'targetMetPercentage', 'topAmount', 'toppers'));
     }
@@ -123,19 +123,19 @@ class CampaignController extends Controller
     {
         if ($campaign->logo) {
             $logo = 'campaigns/' . basename($campaign->logo);
-            if(Storage::exists($logo)) {
+            if (Storage::exists($logo)) {
                 Storage::delete($logo);
             }
         }
 
         $campaign->delete();
 
-        
-        if($campaign->active == 1) {
+
+        if ($campaign->active == 1) {
             // if was an active camp then set last camp as active
             $last = Campaign::orderBy('id', 'desc')->first();
-            
-            if($last) {
+
+            if ($last) {
                 $last->active = 1;
                 $last->save();
             }
@@ -147,27 +147,27 @@ class CampaignController extends Controller
 
     private function uploadImage($campaign)
     {
-        
+
         if (request()->hasFile('logo') && request()->file('logo')->isValid()) {
             //check it has already image
             $oldImage = basename($campaign->logo);
-            
+
             // if already one image before delete it after successful uploading
-            if ($oldImage && Storage::exists('campaigns/'.$oldImage)) {
-                Storage::delete('campaigns/'.$oldImage);
+            if ($oldImage && Storage::exists('campaigns/' . $oldImage)) {
+                Storage::delete('campaigns/' . $oldImage);
             }
-            
+
             $filename = Storage::putFile('campaigns', request()->file('logo'));
 
             $campaign->logo = $filename;
             $campaign->save();
-
         }
     }
 
-    private function clearDefault($campaignId) {
-        if(request()->get('active') == 1) {
-            Campaign::where('id', '!=', $campaignId)->each(function($camp) {
+    private function clearDefault($campaignId)
+    {
+        if (request()->get('active') == 1) {
+            Campaign::where('id', '!=', $campaignId)->each(function ($camp) {
                 $camp->active = 0;
                 $camp->save();
             });

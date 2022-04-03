@@ -95,26 +95,34 @@ class User extends Authenticatable
         return $this->hasMany(Sponsor::class);
     }
 
-    public function totalAmount()
+    public function totalAmount($camp_id = null)
     {
-        if ($this->camp && $this->sponsors()->exists()) {
-            return $this->sponsors()->where('campaign_id', $this->camp->id)->sum('amount');
+        $camp = $this->camp;
+
+        if ($camp_id) {
+            $camp = Campaign::find($camp_id);
+        }
+
+        if ($camp && $this->sponsors()->exists()) {
+            return $this->sponsors()->where('campaign_id', $camp->id)->sum('amount');
         } else {
             return 0;
         }
     }
 
-    public function targetMet()
+    public function targetMet($camp_id = null)
     {
-        $target = $this->camp->individualTarget('');
+        $camp = $camp_id ? Campaign::find($camp_id) : $this->camp;
+        $target = $camp->individualTarget('');
         $amount = $this->totalAmount();
 
         return $amount >= $target;
     }
 
-    public function totalAmountPercentage()
+    public function totalAmountPercentage($camp_id = null)
     {
-        $target = $this->camp ? $this->camp->individualTarget('') : 0;
+        $camp = $camp_id ? Campaign::find($camp_id) : $this->camp;
+        $target = $camp ? $camp->individualTarget('') : 0;
         $total = $this->totalAmount();
 
         if ($target > 0 && $total > 0) {
@@ -124,11 +132,12 @@ class User extends Authenticatable
         }
     }
 
-    public function totalAmountReceived($type = 'amount')
+    public function totalAmountReceived($type = 'amount', $camp_id = null)
     {
+        $camp = $camp_id ? Campaign::find($camp_id) : $this->camp;
         if ($this->sponsors()->exists()) {
             $total = $this->totalAmount();
-            $received = $this->sponsors()->where(['campaign_id' => $this->camp->id, 'amount_received' => 1])->sum('amount');
+            $received = $this->sponsors()->where(['campaign_id' => $camp->id, 'amount_received' => 1])->sum('amount');
 
             if ($type == 'amount') {
                 return $received;
@@ -140,9 +149,9 @@ class User extends Authenticatable
         }
     }
 
-    public static function usersWithTargetMet($target)
+    public static function usersWithTargetMet($target, $camp_id = null)
     {
-        $campaign = Campaign::active()->first();
+        $campaign = $camp_id ? Campaign::find($camp_id) : Campaign::active()->first();
 
         return DB::table('sponsors')->select("users.name", "users.id", DB::raw("SUM(sponsors.amount) as total_amount"))
             ->join("users", 'sponsors.user_id', '=', 'users.id')
@@ -154,9 +163,9 @@ class User extends Authenticatable
     }
 
 
-    public static function usersWithTargetMetCount($target)
+    public static function usersWithTargetMetCount($target, $camp_id = null)
     {
-        return count(self::usersWithTargetMet($target));
+        return count(self::usersWithTargetMet($target, $camp_id));
     }
 
     public static function topAmountOfCampaign($campaign)

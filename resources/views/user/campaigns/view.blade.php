@@ -13,6 +13,7 @@
             right: 15px;
             z-index: 9999;
         }
+
     </style>
 @endsection
 
@@ -58,8 +59,10 @@
                 <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
                     <div class="flex">
                         <div class="card-header__title text-muted mb-2 d-flex">Target <span
-                                class="badge badge-warning ml-2">{{ number_format($campaign->totalAmountPercentage(), 2) }}%</span></div>
-                        <span class="h4 m-0">₹{{ number_format($campaign->totalAmount()) }} <small class="text-muted"> /
+                                class="badge badge-warning ml-2">{{ number_format($campaign->totalAmountPercentage(), 2) }}%</span>
+                        </div>
+                        <span class="h4 m-0">₹{{ number_format($campaign->totalAmount()) }} <small
+                                class="text-muted"> /
                                 ₹{{ number_format($campaign->target) }}</small> </span>
                     </div>
                     <div><i class="material-icons icon-muted icon-40pt ml-3">monetization_on</i></div>
@@ -93,18 +96,16 @@
                 <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
                     <div class="flex">
                         <div class="card-header__title text-muted mb-2">Amount Received <span
-                            class="badge badge-success ml-2">{{ number_format($campaign->totalAmountPercentage('received'), 2) }}%</span></div>
+                                class="badge badge-success ml-2">{{ number_format($campaign->totalAmountPercentage('received'), 2) }}%</span>
+                        </div>
 
                         <div class="d-flex align-items-center">
                             <div class="h4 m-0">₹{{ number_format($campaign->totalAmount('received')) }}</div>
-                            <div class="progress ml-1"
-                                 style="width:100%;height: 3px;">
-                                <div class="progress-bar bg-success"
-                                     role="progressbar"
-                                     style="width: {{ $campaign->totalAmountPercentage('received') }}%;"
-                                     aria-valuenow="{{ $campaign->totalAmountPercentage('received') }}"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"></div>
+                            <div class="progress ml-1" style="width:100%;height: 3px;">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                    style="width: {{ $campaign->totalAmountPercentage('received') }}%;"
+                                    aria-valuenow="{{ $campaign->totalAmountPercentage('received') }}" aria-valuemin="0"
+                                    aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
@@ -113,7 +114,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row card-group-row">
         <div class="col-lg-4 col-md-6 card-group-row__col">
             <div class="card card-group-row__card">
@@ -121,24 +122,27 @@
                     <div class="flex">
                         <div class="card-header__title text-muted mb-2 d-flex">
                             Your target
-                            @if (!auth()->user()->targetMet())
-                                <span class="badge badge-warning ml-2">{{ auth()->user()->totalAmountPercentage() }}%</span>
+                            @if (!auth()->user()->targetMet($campaign->id))
+                                <span
+                                    class="badge badge-warning ml-2">{{ number_format(auth()->user()->totalAmountPercentage($campaign->id),2) }}%</span>
                             @endif
                         </div>
-                        @if (!auth()->user()->targetMet())    
-                         <span class="h4 m-0">₹{{ number_format(auth()->user()->totalAmount()) }} <small class="text-muted"> /
-                                ₹{{ $campaign->individualTarget() }}</small> </span>
+                        @if (!auth()->user()->targetMet())
+                            <span class="h4 m-0">₹{{ number_format(auth()->user()->totalAmount($campaign->id)) }}
+                                <small class="text-muted"> /
+                                    ₹{{ $campaign->individualTarget() }}</small> </span>
                         @else
                             <span class="text-success">Completed</span>
                         @endif
                     </div>
                     <div><i class="material-icons icon-muted icon-40pt ml-3">monetization_on</i></div>
                 </div>
-                @if (!auth()->user()->targetMet())    
+                @if (!auth()->user()->targetMet())
                     <div class="progress" style="height: 3px;">
                         <div class="progress-bar bg-warning" role="progressbar"
-                            style="width: {{ auth()->user()->totalAmountPercentage() }}%;"
-                            aria-valuenow="{{ auth()->user()->totalAmountPercentage() }}" aria-valuemin="0" aria-valuemax="100">
+                            style="width: {{ auth()->user()->totalAmountPercentage($campaign->id) }}%;"
+                            aria-valuenow="{{ auth()->user()->totalAmountPercentage($campaign->id) }}" aria-valuemin="0"
+                            aria-valuemax="100">
                         </div>
                     </div>
                 @endif
@@ -149,7 +153,8 @@
                 <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
                     <div class="flex">
                         <div class="card-header__title text-muted d-flex mb-2">Your total amount</div>
-                        <span class="h4 m-0">₹{{ number_format(auth()->user()->totalAmount()) }}</span>
+                        <span
+                            class="h4 m-0">₹{{ number_format(auth()->user()->totalAmount($campaign->id)) }}</span>
                     </div>
                     <div><i class="material-icons icon-muted icon-40pt ml-3">contacts</i></div>
                 </div>
@@ -160,18 +165,17 @@
                 <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
                     <div class="flex">
                         <div class="card-header__title text-muted mb-2">Amount Received <span
-                            class="badge badge-success ml-2">{{ number_format(auth()->user()->totalAmountReceived('percentage'), 2) }}%</span></div>
+                                class="badge badge-success ml-2">{{ number_format(auth()->user()->totalAmountReceived('percentage', $campaign->id),2) }}%</span>
+                        </div>
 
                         <div class="d-flex align-items-center">
-                            <div class="h4 m-0">₹{{ number_format(auth()->user()->totalAmountReceived('amount')) }}</div>
-                            <div class="progress ml-1"
-                                 style="width:100%;height: 3px;">
-                                <div class="progress-bar bg-success"
-                                     role="progressbar"
-                                     style="width: {{ auth()->user()->totalAmountReceived('percentage') }}%;"
-                                     aria-valuenow="{{ auth()->user()->totalAmountReceived('percentage') }}"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"></div>
+                            <div class="h4 m-0">
+                                ₹{{ number_format(auth()->user()->totalAmountReceived('amount', $campaign->id)) }}</div>
+                            <div class="progress ml-1" style="width:100%;height: 3px;">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                    style="width: {{ auth()->user()->totalAmountReceived('percentage', $campaign->id) }}%;"
+                                    aria-valuenow="{{ auth()->user()->totalAmountReceived('percentage', $campaign->id) }}"
+                                    aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
@@ -277,7 +281,7 @@
                 'info': true,
                 'autoWidth': false,
                 'createdRow': function(row, data, dataIndex) {
-                    if(data.verification == 1) {
+                    if (data.verification == 1) {
                         $(row).addClass('bg-success');
                     }
 
@@ -315,7 +319,7 @@
                         render: function(data) {
                             return `<a class="btn btn-sm btn-info btn-block" href="${data.view}">View</a><a class="btn btn-sm btn-primary btn-block" href="${data.edit}">Edit</a>`;
                         },
-                        orderable:false
+                        orderable: false
                     }
                 ]
             })
@@ -329,6 +333,5 @@
                 });
             }).draw();
         });
-
     </script>
 @endsection
