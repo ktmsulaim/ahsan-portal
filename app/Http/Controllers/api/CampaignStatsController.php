@@ -28,7 +28,7 @@ class CampaignStatsController extends Controller
                     $i = 1;
                     foreach ($members as $member) {
                         $total_amount = $member->totalAmount();
-                        $data .= $i . '. ' . $member->name . ($total_amount > 0 ? " - *₹" . number_format($member->totalAmount($camp->id)) : '') . "*\n";
+                        $data .= $i . '. ' . $member->name . ($total_amount > 0 ? " - *₹" . number_format($member->totalAmount($camp->id)) . '*' : '') . "\n";
                         $i++;
                     }
                 }
