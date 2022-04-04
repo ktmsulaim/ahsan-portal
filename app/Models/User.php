@@ -153,8 +153,12 @@ class User extends Authenticatable
     {
         $campaign = $camp_id ? Campaign::find($camp_id) : Campaign::active()->first();
 
-        return DB::table('sponsors')->select("users.name", "users.id", DB::raw("SUM(sponsors.amount) as total_amount"))
-            ->join("users", 'sponsors.user_id', '=', 'users.id')
+        return DB::table('users')->select(
+            "users.name",
+            "users.id",
+            DB::raw("SUM(sponsors.amount) as total_amount")
+        )
+            ->join("sponsors", 'sponsors.user_id', '=', 'users.id')
             ->where('sponsors.campaign_id', $campaign->id)
             ->orderBy("total_amount", "desc")
             ->groupBy('users.id')

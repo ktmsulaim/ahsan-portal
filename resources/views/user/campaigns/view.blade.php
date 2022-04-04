@@ -127,7 +127,7 @@
                                     class="badge badge-warning ml-2">{{ number_format(auth()->user()->totalAmountPercentage($campaign->id),2) }}%</span>
                             @endif
                         </div>
-                        @if (!auth()->user()->targetMet())
+                        @if (!auth()->user()->targetMet($campaign->id))
                             <span class="h4 m-0">₹{{ number_format(auth()->user()->totalAmount($campaign->id)) }}
                                 <small class="text-muted"> /
                                     ₹{{ $campaign->individualTarget() }}</small> </span>

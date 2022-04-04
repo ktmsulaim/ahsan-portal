@@ -10,6 +10,7 @@
             background-image-resize: 6;
             background-position: left top;
         }
+
         .ref {
             padding-left: 55px;
             font-size: 20px;
@@ -33,15 +34,18 @@
         <div class="date" style="float: right">{{ $date }}</div>
     </div>
     <div style="margin-top: 65px" class="content">
-        <p>ബഹുമാനപ്പെട്ട &nbsp; &nbsp;<span style="color: red; margin-left: 5px">{{ $donor ? $donor : $sponsor->name }}</span> &nbsp; &nbsp;അവർകൾക്ക്,</p>
+        <p>ബഹുമാനപ്പെട്ട &nbsp; &nbsp;<span
+                style="color: red; margin-left: 5px">{{ $donor ? $donor : $sponsor->name }}</span> &nbsp;
+            &nbsp;അവർകൾക്ക്,</p>
 
         <p>ക്ഷേമവും സൗഖ്യവും നേരുന്നു....</p>
 
 
         <p>കണ്ണാടിപ്പറമ്പ് ദാറുൽ ഹസനാത്ത് വിദ്യാഭ്യാസ സംരംഭങ്ങളോട് താങ്കൾ സഹകരിച്ചതിന് ഹൃദ്യമായ നന്ദി.</p>
 
-        <p>കോവിഡ് മഹാമാരിയുടെ പ്രതിസന്ധി ഘട്ടത്തിലും ഹസനാത്തിനൊരു കൈതാങ്ങാവാൻ താങ്കൾ കാണിച്ച സന്നദ്ധത അല്ലാഹു
-            സ്വീകരിക്കട്ടെ. താങ്കൾ നൽകിയ <span style="font-weight: bold">{{ $amount ? $amount : $sponsor->amount }}</span> സംഭാവന റമളാനിന്റെ പുണ്യം കരസ്ഥമാവാൻ നിദാനമാവട്ടെ....
+        <p>പുണ്യങ്ങള്‍ പെയ്‌തിറങ്ങുന്ന വിശുദ്ധ റമളാനില്‍ ദാറുല്‍ ഹസനാത്തിനായി താങ്കള്‍ നല്‍കിയ ഈ മഹത്തായ സംഭാവന
+            സന്തോഷപൂര്‍വ്വം സ്വീകരിക്കുന്നു. താങ്കൾ നൽകിയ <span
+                style="font-weight: bold">{{ $amount ? $amount : $sponsor->amount }}</span> നാഥന്‍ സ്വീകരിക്കട്ടെ....
             ഈ നന്മ കാരണമായി സർവശക്തൻ കുടുംബത്തിലും മറ്റു വ്യവഹാരങ്ങളിലും അനുഗ്രഹം ചൊരിയട്ടെ... ആമീൻ</p>
 
         <p>തിരിച്ചുതരാൻ ഞങ്ങളുടെ കൈയിൽ മുടങ്ങാത്ത പ്രാർത്ഥന മാത്രമേയുള്ളൂ.

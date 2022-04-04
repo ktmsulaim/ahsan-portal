@@ -12,7 +12,12 @@ class MembershipApplyController extends Controller
 {
     public function apply()
     {
-        return view('membership.apply');
+        $dhic_batch = setting('dhic_batch', 8);
+        $dhiu_batch = setting('dhiu_batch', 28);
+        return view('membership.apply', [
+            'dhic_batch' => $dhic_batch,
+            'dhiu_batch' => $dhiu_batch,
+        ]);
     }
 
     public function store(Request $request)
@@ -65,16 +70,16 @@ class MembershipApplyController extends Controller
 
     private function uploadImage($user)
     {
-        
+
         if (request()->hasFile('photo') && request()->file('photo')->isValid()) {
             //check it has already image
             $oldImage = basename($user->photo);
-            
+
             // if already one image before delete it after successful uploading
-            if ($oldImage && Storage::exists('photos/'.$oldImage)) {
-                Storage::delete('photos/'.$oldImage);
+            if ($oldImage && Storage::exists('photos/' . $oldImage)) {
+                Storage::delete('photos/' . $oldImage);
             }
-            
+
             $filename = Storage::putFile('photos', request()->file('photo'));
 
             $user->photo = $filename;

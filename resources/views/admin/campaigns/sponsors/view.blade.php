@@ -2,7 +2,8 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.campaigns.index') }}">Campaigns</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('admin.campaigns.show', $sponsor->campaign->id) }}">{{ $sponsor->campaign->name }}</a></li>
+    <li class="breadcrumb-item"><a
+            href="{{ route('admin.campaigns.show', $sponsor->campaign->id) }}">{{ $sponsor->campaign->name }}</a></li>
     <li class="breadcrumb-item">Sponsors</li>
     <li class="breadcrumb-item active">{{ $sponsor->name }}</li>
 @endsection
@@ -98,7 +99,9 @@
                 </div>
             </div>
 
-          @include('components.print_letterpad')
+            @include('components.print_letterpad', [
+                'url' => route('admin.sponsors.letterpad.print', $sponsor->id),
+            ])
         </div>
     </div>
 @endsection

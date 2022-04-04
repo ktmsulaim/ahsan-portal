@@ -10,7 +10,8 @@
         <div class="col-md-8">
             <div class="card card-form">
                 <div class="card-body card-form__body">
-                    <form id="userForm" action="{{ route('admin.users.store') }}" method="post" enctype="multipart/form-data">
+                    <form id="userForm" action="{{ route('admin.users.store') }}" method="post"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
@@ -57,7 +58,7 @@
                                 <div class="form-group">
                                     <label for="batch">Batch <span class="text-danger">*</span></label>
                                     <select name="batch" id="batch" class="form-control" required>
-                                        @for ($i = 1; $i <= 7; $i++)
+                                        @for ($i = 1; $i <= setting('dhic_batch', 8); $i++)
                                             <option value="Batch {{ $i }}">Batch {{ $i }}</option>
                                         @endfor
                                     </select>
@@ -99,7 +100,7 @@
                             <div class="col-md-6">
                                 <label for="dhiu_batch">Batch (DHIU) <span class="text-danger">*</span></label>
                                 <select name="dhiu_batch" id="dhiu_batch" class="form-control" required>
-                                    @for ($i = 13; $i <= 27; $i++)
+                                    @for ($i = 13; $i <= setting('dhiu_batch', 28); $i++)
                                         <option value="Batch {{ $i }}">Batch {{ $i }}</option>
                                     @endfor
                                     <option value="None of above">None of above</option>
@@ -175,8 +176,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="address1">Address <span class="text-danger">*</span></label>
-                                    <textarea class="form-control" name="address1" id="address1"
-                                        required>{{ old('address1') }}</textarea>
+                                    <textarea class="form-control" name="address1" id="address1" required>{{ old('address1') }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -185,8 +185,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="address2">Address 2</label>
-                                    <textarea class="form-control" name="address2"
-                                        id="address2">{{ old('address2') }}</textarea>
+                                    <textarea class="form-control" name="address2" id="address2">{{ old('address2') }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -201,7 +200,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="phone_personal">Phone (Personal) <span class="text-danger">*</span></label>
+                                    <label for="phone_personal">Phone (Personal) <span
+                                            class="text-danger">*</span></label>
                                     <input type="tel" name="phone_personal" id="phone_personal" class="form-control"
                                         value="{{ old('phone_personal') }}" required>
                                 </div>
@@ -212,8 +212,9 @@
                                 <div class="form-group">
                                     <label for="marital_status">Marital status</label>
                                     <div>
-                                        <div class="custom-control custom-checkbox-toggle custom-control-inline mr-1">    
-                                            <input type="checkbox" name="marital_status" id="marital_status" class="custom-control-input" value=false>
+                                        <div class="custom-control custom-checkbox-toggle custom-control-inline mr-1">
+                                            <input type="checkbox" name="marital_status" id="marital_status"
+                                                class="custom-control-input" value=false>
                                             <label for="marital_status" class="custom-control-label"></label>
                                         </div>
                                     </div>

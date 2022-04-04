@@ -32,55 +32,59 @@ class SponsorController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
-         // Total records
-         $totalRecords = $campaign->sponsors()->count();
+        // Total records
+        $totalRecords = $campaign->sponsors()->count();
 
-         $totalRecordswithFilter = $campaign->sponsors()
-         ->where('name', 'like', "%$searchValue%")
-         ->orWhere('place', 'like', "%$searchValue%")
-         ->orWhere('amount', 'like', "%$searchValue%")
-         ->count();
+        $totalRecordswithFilter = $campaign->sponsors()
+            ->where(function ($query) use ($searchValue) {
+                $query->where('name', 'like', "%$searchValue%")
+                    ->orWhere('place', 'like', "%$searchValue%")
+                    ->orWhere('amount', 'like', "%$searchValue%");
+            })
+            ->count();
 
-         // Fetch records
-        $sponsors = $campaign->sponsors()->orderBy($columnName,$columnSortOrder)
-        ->where('name', 'like', '%' .$searchValue . '%')
-        ->orWhere('place', 'like', '%' .$searchValue . '%')
-        ->orWhere('amount', 'like', '%' .$searchValue . '%')
-        ->skip($start)
-        ->take($rowperpage)
-        ->get();
+        // Fetch records
+        $sponsors = $campaign->sponsors()->orderBy($columnName, $columnSortOrder)
+            ->where(function ($query) use ($searchValue) {
+                $query->where('name', 'like', '%' . $searchValue . '%')
+                    ->orWhere('place', 'like', '%' . $searchValue . '%')
+                    ->orWhere('amount', 'like', '%' . $searchValue . '%');
+            })
+            ->skip($start)
+            ->take($rowperpage)
+            ->get();
 
         $data_arr = array();
-        
-        foreach($sponsors as $key => $sponsor){
-           $data_arr[] = array(
-            "id" => $sponsor->id,
-            "name" => $sponsor->name,
-            "place" => $sponsor->place,
-            "phone" => $sponsor->phone,
-            "amount" => number_format($sponsor->amount),
-            "amount_received" => $sponsor->amount_received,
-            "created_at" => $sponsor->created_at->format('Y') != date('Y') ? $sponsor->created_at->format('d F, Y') : $sponsor->created_at->format('d F'),
-            "verification" => $sponsor->verification,
-            "user" => [
-                'id' => $sponsor->user->id,
-                'name' => $sponsor->user->name,
-                'link' => route('admin.users.show', $sponsor->user_id)
-            ],
-            "urls" => [
-                'view' => route('admin.sponsors.show', $sponsor->id),
-                'edit' => route('admin.sponsors.edit', $sponsor->id)
-            ]
-           );
+
+        foreach ($sponsors as $key => $sponsor) {
+            $data_arr[] = array(
+                "id" => $sponsor->id,
+                "name" => $sponsor->name,
+                "place" => $sponsor->place,
+                "phone" => $sponsor->phone,
+                "amount" => number_format($sponsor->amount),
+                "amount_received" => $sponsor->amount_received,
+                "created_at" => $sponsor->created_at->format('Y') != date('Y') ? $sponsor->created_at->format('d F, Y') : $sponsor->created_at->format('d F'),
+                "verification" => $sponsor->verification,
+                "user" => [
+                    'id' => $sponsor->user->id,
+                    'name' => $sponsor->user->name,
+                    'link' => route('admin.users.show', $sponsor->user_id)
+                ],
+                "urls" => [
+                    'view' => route('admin.sponsors.show', $sponsor->id),
+                    'edit' => route('admin.sponsors.edit', $sponsor->id)
+                ]
+            );
         }
-   
+
         $response = array(
-           "draw" => intval($draw),
-           "iTotalRecords" => $totalRecords,
-           "iTotalDisplayRecords" => $totalRecordswithFilter,
-           "aaData" => $data_arr
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $data_arr
         );
-   
+
         echo json_encode($response);
         exit;
     }
@@ -106,47 +110,47 @@ class SponsorController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
-         // Total records
-         $sponsorGroup = Sponsor::where(['user_id' => $user->id, 'campaign_id' => $campaign->id]);
-         $totalRecords = $sponsorGroup->count();
-         $totalRecordswithFilter = $sponsorGroup->where(function($query) use($searchValue){
-             return $query->where('name', 'like', "%$searchValue%")->orWhere('place', 'like', "%$searchValue%");
-         })->count();
-         // Fetch records
-        $sponsors = $sponsorGroup->orderBy($columnName,$columnSortOrder)
-        ->where(function($query) use($searchValue) {
+        // Total records
+        $sponsorGroup = Sponsor::where(['user_id' => $user->id, 'campaign_id' => $campaign->id]);
+        $totalRecords = $sponsorGroup->count();
+        $totalRecordswithFilter = $sponsorGroup->where(function ($query) use ($searchValue) {
             return $query->where('name', 'like', "%$searchValue%")->orWhere('place', 'like', "%$searchValue%");
-        })
-        ->skip($start)
-        ->take($rowperpage)
-        ->get();
+        })->count();
+        // Fetch records
+        $sponsors = $sponsorGroup->orderBy($columnName, $columnSortOrder)
+            ->where(function ($query) use ($searchValue) {
+                return $query->where('name', 'like', "%$searchValue%")->orWhere('place', 'like', "%$searchValue%");
+            })
+            ->skip($start)
+            ->take($rowperpage)
+            ->get();
 
         $data_arr = array();
-        
-        foreach($sponsors as $key => $sponsor){
-           $data_arr[] = array(
-            "id" => $sponsor->id,
-            "name" => $sponsor->name,
-            "place" => $sponsor->place,
-            "phone" => $sponsor->phone,
-            "amount" => number_format($sponsor->amount),
-            "amount_received" => $sponsor->amount_received,
-            "created_at" => $sponsor->created_at->format('d F, Y'),
-            "verification" => $sponsor->verification,
-            "urls" => [
-                'view' => route('admin.sponsors.show', $sponsor->id),
-                'edit' => route('admin.sponsors.edit', $sponsor->id)
-            ]
-           );
+
+        foreach ($sponsors as $key => $sponsor) {
+            $data_arr[] = array(
+                "id" => $sponsor->id,
+                "name" => $sponsor->name,
+                "place" => $sponsor->place,
+                "phone" => $sponsor->phone,
+                "amount" => number_format($sponsor->amount),
+                "amount_received" => $sponsor->amount_received,
+                "created_at" => $sponsor->created_at->format('d F, Y'),
+                "verification" => $sponsor->verification,
+                "urls" => [
+                    'view' => route('admin.sponsors.show', $sponsor->id),
+                    'edit' => route('admin.sponsors.edit', $sponsor->id)
+                ]
+            );
         }
-   
+
         $response = array(
-           "draw" => intval($draw),
-           "iTotalRecords" => $totalRecords,
-           "iTotalDisplayRecords" => $totalRecordswithFilter,
-           "aaData" => $data_arr
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $data_arr
         );
-   
+
         echo json_encode($response);
         exit;
     }
@@ -158,7 +162,6 @@ class SponsorController extends Controller
      */
     public function create()
     {
-        
     }
 
     /**
@@ -183,7 +186,6 @@ class SponsorController extends Controller
         Toastr::success('The sposor was added successfully');
 
         return Redirect::back();
-
     }
 
     /**
@@ -228,7 +230,7 @@ class SponsorController extends Controller
 
         Toastr::success('The sponsor has been updated', 'Updated');
 
-        if($request->has('redirect_url')) {
+        if ($request->has('redirect_url')) {
             return Redirect::to($request->get('redirect_url'));
         } else {
             return Redirect::route('admin.campaigns.show', $sponsor->campaign->id);

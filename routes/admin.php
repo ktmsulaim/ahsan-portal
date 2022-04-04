@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\LetterpadPrintController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\SponsorsExportController;
 use App\Http\Controllers\UserApplicationController;
@@ -27,7 +28,7 @@ Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name(
 Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('admin.password.reset');
 Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm']);
 
-Route::middleware('admin')->group(function(){
+Route::middleware('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
     Route::get('/changePassword', [AdminController::class, 'changePassword'])->name('admin.changePassword');
@@ -39,7 +40,7 @@ Route::middleware('admin')->group(function(){
      * ---------------------------------------------------------------------
      */
 
-     // Applications
+    // Applications
     Route::get('/members/applications', [UserApplicationController::class, 'index'])->name('admin.users.applications.index');
     Route::get('/members/applications/ajax/{status}', [UserApplicationController::class, 'dtIndex'])->name('admin.users.applications.dtIndex');
 
@@ -55,24 +56,24 @@ Route::middleware('admin')->group(function(){
     Route::get('/members/{user}/edit', [AdminUsersController::class, 'edit'])->name('admin.users.edit');
     Route::patch('/members/{user}', [AdminUsersController::class, 'update'])->name('admin.users.update');
     Route::delete('/members/{user}', [AdminUsersController::class, 'destroy'])->name('admin.users.delete');
-    
-    Route::post('/members/import', [AdminUsersController::class, 'import'])->name('admin.users.import');
-    
-    Route::post('/members/bulkupdate/batch', [AdminUsersController::class, 'bulkupdate'])->name('admin.users.bulkupdate');
-    
-    Route::get('/campaigns/{campaign}/sponsors/export', [SponsorsExportController::class, 'export'])->name('admin.sponsors.export');
-    
-    Route::resource('campaigns', CampaignController::class, ['as' => 'admin']);
-    
 
-    
+    Route::post('/members/import', [AdminUsersController::class, 'import'])->name('admin.users.import');
+
+    Route::post('/members/bulkupdate/batch', [AdminUsersController::class, 'bulkupdate'])->name('admin.users.bulkupdate');
+
+    Route::get('/campaigns/{campaign}/sponsors/export', [SponsorsExportController::class, 'export'])->name('admin.sponsors.export');
+
+    Route::resource('campaigns', CampaignController::class, ['as' => 'admin']);
+
+
+
     /**
      * ---------------------------------------------------------------------
      * Sponsors management
      * ---------------------------------------------------------------------
      */
     Route::resource('sponsors', SponsorController::class, ['as' => 'admin'])->except(['index']);
-    
+
     Route::get('/sponsors/campaigns/{campaign}', [SponsorController::class, 'index'])->name('admin.sponsors.index');
 
     Route::get('/members/{user}/campaigns/{campaign}', [SponsorController::class, 'byUser'])->name('admin.sponsors.byUser');
@@ -85,11 +86,19 @@ Route::middleware('admin')->group(function(){
      */
     Route::get('/sponsors/{sponsor}/print/', [LetterpadPrintController::class, 'print'])->name('admin.sponsors.letterpad.print');
 
-     /**
+    /**
      * ---------------------------------------------------------------------
      * Reports
      * ---------------------------------------------------------------------
      */
     Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports.index');
     Route::get('/reports/show', [ReportController::class, 'show'])->name('admin.reports.show');
+
+    /**
+     * ---------------------------------------------------------------------
+     * Settings
+     * ---------------------------------------------------------------------
+     */
+    Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');
 });
