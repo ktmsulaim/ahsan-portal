@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Campaign;
+use App\Models\Sponsor;
 use App\Models\User;
 
 class CampaignStatsController extends Controller
@@ -33,6 +34,9 @@ class CampaignStatsController extends Controller
                     }
                 }
 
+                $data .= "\n";
+                $batch_total = Sponsor::totalAmountByBatch($camp->id, $batch->batch);
+                $data .= "*Total:₹" . $batch_total ? number_format(Sponsor::totalAmountByBatch($camp->id, $batch->batch)->amount) : 0 . " *";
                 $data .= "\n\n";
             }
         }

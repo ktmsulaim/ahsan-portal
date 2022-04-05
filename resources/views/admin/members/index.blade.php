@@ -40,7 +40,7 @@
             </div> <!-- // END .modal-content -->
         </div> <!-- // END .modal-dialog -->
     </div> <!-- // END .modal -->
-    
+
     <div id="modal-bulkedit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-large-title"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -56,17 +56,18 @@
                     <form id="bulkEditForm" action="{{ route('admin.users.bulkupdate') }}" method="post">
                         @csrf
                         <input type="hidden" name="selected" id="selectedIds">
-                       <div class="form-group">
-                           <select name="column" id="column" class="form-control" required>
-                               <option value="batch">Batch</option>
-                               <option value="dhiu_dept">Department</option>
-                               <option value="dhiu_batch">Batch (DHIU)</option>
-                               <option value="district">District</option>
-                           </select>
-                       </div>
-                       <div class="form-group">
-                           <input type="text" placeholder="Type any value here...." class="form-control" name="value" id="value">
-                       </div>
+                        <div class="form-group">
+                            <select name="column" id="column" class="form-control" required>
+                                <option value="batch">Batch</option>
+                                <option value="dhiu_dept">Department</option>
+                                <option value="dhiu_batch">Batch (DHIU)</option>
+                                <option value="district">District</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Type any value here...." class="form-control" name="value"
+                                id="value">
+                        </div>
                     </form>
                 </div> <!-- // END .modal-body -->
                 <div class="modal-footer">
@@ -84,7 +85,7 @@
                     <div class="row my-2">
                         <div class="col-md-4">
                             <select id="batch" class="form-control">
-                                @for ($i = 1; $i <= 7; $i++)
+                                @for ($i = 1; $i <= setting('dhic_batch', 8); $i++)
                                     <option value="Batch {{ $i }}">Batch {{ $i }}</option>
                                 @endfor
                             </select>
@@ -192,15 +193,15 @@
                     $(this).toggleClass('selected');
                     const id = $(this).data('id');
 
-                    if(selected.includes(id)) {
+                    if (selected.includes(id)) {
                         const index = selected.indexOf(id);
                         selected.splice(index, 1);
                     } else {
                         selected.push(id);
                     }
-                    
 
-                    if(selected && selected.length > 0) {
+
+                    if (selected && selected.length > 0) {
                         editWrapper.show();
                         $('#modal-bulkedit').find('#selectedIds').val(selected);
                     } else {
@@ -210,7 +211,7 @@
                     console.log(selected);
                 });
 
-                if(selected && selected.length > 0) {
+                if (selected && selected.length > 0) {
                     editWrapper.show();
                     $('#modal-bulkedit').find('#selectedIds').val(selected);
                 } else {
@@ -220,6 +221,5 @@
 
             bulkEdit();
         })
-
     </script>
 @endsection
