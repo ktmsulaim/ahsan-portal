@@ -36,7 +36,13 @@ class CampaignStatsController extends Controller
 
                 $data .= "\n";
                 $batch_total = Sponsor::totalAmountByBatch($camp->id, $batch->batch);
-                $data .= "*Total:₹" . $batch_total ? number_format(Sponsor::totalAmountByBatch($camp->id, $batch->batch)->amount) : 0 . " *";
+
+                if ($batch_total) {
+                    $batch_total = $batch_total->amount;
+                }
+
+                $data .= "*Total:₹" . $batch_total ? number_format($batch_total) : 0 . "*";
+
                 $data .= "\n\n";
             }
         }
