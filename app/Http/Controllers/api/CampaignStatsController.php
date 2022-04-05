@@ -41,7 +41,7 @@ class CampaignStatsController extends Controller
                     $batch_total = $batch_total->amount;
                 }
 
-                $data .= "*Total:₹" . $batch_total ? number_format($batch_total) : 0 . "*";
+                $data .= "*Total:₹" . ($batch_total ? number_format($batch_total) : 0) . "*";
 
                 $data .= "\n\n";
             }
