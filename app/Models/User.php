@@ -95,7 +95,7 @@ class User extends Authenticatable
         return $this->hasMany(Sponsor::class);
     }
 
-    public function totalAmount($camp_id = null)
+    public function totalAmount($camp_id = null, $received = null)
     {
         $camp = $this->camp;
 
@@ -104,7 +104,15 @@ class User extends Authenticatable
         }
 
         if ($camp && $this->sponsors()->exists()) {
-            return $this->sponsors()->where('campaign_id', $camp->id)->sum('amount');
+            return $this->sponsors()->where(function ($q) use ($camp_id, $received) {
+                if ($camp_id) {
+                    $q->where('campaign_id', $camp_id);
+                }
+
+                if ($received !== null) {
+                    $q->where('amount_received', $received);
+                }
+            })->sum('amount');
         } else {
             return 0;
         }
