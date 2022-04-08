@@ -49,8 +49,10 @@
                 <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
                     <div class="flex">
                         <div class="card-header__title text-muted mb-2 d-flex">Target <span
-                                class="badge badge-warning ml-2">{{ number_format($campaign->totalAmountPercentage(), 2) }}%</span></div>
-                        <span class="h4 m-0">₹{{ number_format($campaign->totalAmount()) }} <small class="text-muted"> /
+                                class="badge badge-warning ml-2">{{ number_format($campaign->totalAmountPercentage(), 2) }}%</span>
+                        </div>
+                        <span class="h4 m-0">₹{{ number_format($campaign->totalAmount()) }} <small
+                                class="text-muted"> /
                                 ₹{{ number_format($campaign->target) }}</small> </span>
                     </div>
                     <div><i class="material-icons icon-muted icon-40pt ml-3">monetization_on</i></div>
@@ -84,18 +86,16 @@
                 <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
                     <div class="flex">
                         <div class="card-header__title text-muted mb-2">Amount Received <span
-                            class="badge badge-success ml-2">{{ number_format($campaign->totalAmountPercentage('received'), 2) }}%</span></div>
+                                class="badge badge-success ml-2">{{ number_format($campaign->totalAmountPercentage('received'), 2) }}%</span>
+                        </div>
 
                         <div class="d-flex align-items-center">
                             <div class="h4 m-0">₹{{ number_format($campaign->totalAmount('received')) }}</div>
-                            <div class="progress ml-1"
-                                 style="width:100%;height: 3px;">
-                                <div class="progress-bar bg-success"
-                                     role="progressbar"
-                                     style="width: {{ $campaign->totalAmountPercentage('received') }}%;"
-                                     aria-valuenow="{{ $campaign->totalAmountPercentage('received') }}"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"></div>
+                            <div class="progress ml-1" style="width:100%;height: 3px;">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                    style="width: {{ $campaign->totalAmountPercentage('received') }}%;"
+                                    aria-valuenow="{{ $campaign->totalAmountPercentage('received') }}" aria-valuemin="0"
+                                    aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
@@ -119,15 +119,18 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Batch</th>
                                         <th>Amount</th>
                                     </tr>
                                 </thead>
                                 @foreach ($toppers as $key => $topper)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $topper->name }}</td>
-                                        <td>{{ $topper->batch }}</td>
+                                        <td>
+                                            {{ $topper->name }}
+                                            <p class="m-0">
+                                                <small>{{ $topper->batch }}</small>
+                                            </p>
+                                        </td>
                                         <td>{{ number_format($topper->total_amount) }}</td>
                                     </tr>
                                 @endforeach
@@ -202,7 +205,7 @@
                 'info': true,
                 'autoWidth': false,
                 'createdRow': function(row, data, dataIndex) {
-                    if(data.verification == 1) {
+                    if (data.verification == 1) {
                         $(row).addClass('bg-success');
                     }
 
@@ -246,7 +249,7 @@
                         render: function(data) {
                             return `<a class="btn btn-sm btn-info btn-block" href="${data.view}">View</a><a class="btn btn-sm btn-primary btn-block" href="${data.edit}">Edit</a>`;
                         },
-                        orderable:false
+                        orderable: false
                     }
                 ]
             })
@@ -260,6 +263,5 @@
                 });
             }).draw();
         });
-
     </script>
 @endsection

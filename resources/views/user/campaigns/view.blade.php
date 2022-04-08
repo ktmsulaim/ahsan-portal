@@ -209,15 +209,18 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Batch</th>
                                         <th>Amount</th>
                                     </tr>
                                 </thead>
                                 @foreach ($toppers as $key => $topper)
                                     <tr class="{{ $topper->id == auth()->id() ? 'bg-info' : '' }}">
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $topper->name }}</td>
-                                        <td>{{ $topper->batch }}</td>
+                                        <td>
+                                            {{ $topper->name }}
+                                            <p class="m-0">
+                                                <small>{{ $topper->batch }}</small>
+                                            </p>
+                                        </td>
                                         <td>{{ number_format($topper->total_amount) }}</td>
                                     </tr>
                                 @endforeach
@@ -243,7 +246,8 @@
                     <div>
                         <form action="{{ route('user.sponsors.export', $campaign->id) }}" method="get">
                             <input type="hidden" name="mode" value="member">
-                            <button class="btn btn-info"><span class="material-icons">import_export</span> Export</button>
+                            <button class="btn btn-info"><span class="material-icons">import_export</span>
+                                Export</button>
                         </form>
                     </div>
                 </div>
