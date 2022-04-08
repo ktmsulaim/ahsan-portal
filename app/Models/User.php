@@ -104,9 +104,9 @@ class User extends Authenticatable
         }
 
         if ($camp && $this->sponsors()->exists()) {
-            return $this->sponsors()->where(function ($q) use ($camp_id, $received) {
-                if ($camp_id) {
-                    $q->where('campaign_id', $camp_id);
+            return $this->sponsors()->where(function ($q) use ($camp, $received) {
+                if ($camp) {
+                    $q->where('campaign_id', $camp->id);
                 }
 
                 if ($received !== null) {
@@ -121,8 +121,8 @@ class User extends Authenticatable
     public function targetMet($camp_id = null)
     {
         $camp = $camp_id ? Campaign::find($camp_id) : $this->camp;
-        $target = $camp->individualTarget('');
-        $amount = $this->totalAmount();
+        $target = $camp->individualTarget('', false);
+        $amount = $this->totalAmount($camp_id);
 
         return $amount >= $target;
     }
@@ -130,7 +130,7 @@ class User extends Authenticatable
     public function totalAmountPercentage($camp_id = null)
     {
         $camp = $camp_id ? Campaign::find($camp_id) : $this->camp;
-        $target = $camp ? $camp->individualTarget('') : 0;
+        $target = $camp ? $camp->individualTarget('', false) : 0;
         $total = $this->totalAmount();
 
         if ($target > 0 && $total > 0) {
@@ -144,7 +144,7 @@ class User extends Authenticatable
     {
         $camp = $camp_id ? Campaign::find($camp_id) : $this->camp;
         if ($this->sponsors()->exists()) {
-            $total = $this->totalAmount();
+            $total = $this->totalAmount($camp_id);
             $received = $this->sponsors()->where(['campaign_id' => $camp->id, 'amount_received' => 1])->sum('amount');
 
             if ($type == 'amount') {

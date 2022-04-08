@@ -52,13 +52,17 @@
             </div>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col">
+            <h4>Summary</h4>
+        </div>
+    </div>
     <div class="row card-group-row">
         <div class="col-lg-4 col-md-6 card-group-row__col">
             <div class="card card-group-row__card">
                 <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
                     <div class="flex">
-                        <div class="card-header__title text-muted mb-2 d-flex">Target <span
+                        <div class="card-header__title text-muted mb-2 d-flex">Sponsored <span
                                 class="badge badge-warning ml-2">{{ number_format($campaign->totalAmountPercentage(), 2) }}%</span>
                         </div>
                         <span class="h4 m-0">₹{{ number_format($campaign->totalAmount()) }} <small
@@ -115,13 +119,19 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col">
+            <h4>Your status</h4>
+        </div>
+    </div>
+
     <div class="row card-group-row">
         <div class="col-lg-4 col-md-6 card-group-row__col">
             <div class="card card-group-row__card">
                 <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
                     <div class="flex">
                         <div class="card-header__title text-muted mb-2 d-flex">
-                            Your target
+                            Target
                             @if (!auth()->user()->targetMet($campaign->id))
                                 <span
                                     class="badge badge-warning ml-2">{{ number_format(auth()->user()->totalAmountPercentage($campaign->id),2) }}%</span>
@@ -137,7 +147,7 @@
                     </div>
                     <div><i class="material-icons icon-muted icon-40pt ml-3">monetization_on</i></div>
                 </div>
-                @if (!auth()->user()->targetMet())
+                @if (!auth()->user()->targetMet($campaign->id))
                     <div class="progress" style="height: 3px;">
                         <div class="progress-bar bg-warning" role="progressbar"
                             style="width: {{ auth()->user()->totalAmountPercentage($campaign->id) }}%;"
@@ -152,7 +162,7 @@
             <div class="card card-group-row__card">
                 <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
                     <div class="flex">
-                        <div class="card-header__title text-muted d-flex mb-2">Your total amount</div>
+                        <div class="card-header__title text-muted d-flex mb-2">Total amount</div>
                         <span
                             class="h4 m-0">₹{{ number_format(auth()->user()->totalAmount($campaign->id)) }}</span>
                     </div>

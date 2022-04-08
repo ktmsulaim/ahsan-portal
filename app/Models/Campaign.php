@@ -29,14 +29,14 @@ class Campaign extends Model
 
     public function getLogoAttribute($val)
     {
-        if($val) {
+        if ($val) {
             return Storage::url($val);
         }
     }
 
     public function logo()
     {
-        if($this->logo && Storage::exists('campaigns/' . basename($this->logo))) {
+        if ($this->logo && Storage::exists('campaigns/' . basename($this->logo))) {
             return $this->logo;
         } else {
             return asset('assets/images/470x290.png');
@@ -45,10 +45,10 @@ class Campaign extends Model
 
     public function totalAmount($mode = 'all')
     {
-        if($this->sponsors()->exists()) {
-            if($mode == 'all') {
+        if ($this->sponsors()->exists()) {
+            if ($mode == 'all') {
                 return $this->sponsors->sum('amount');
-            } elseif($mode == 'received') {
+            } elseif ($mode == 'received') {
                 return $this->sponsors()->where('amount_received', 1)->sum('amount');
             }
         } else {
@@ -58,10 +58,10 @@ class Campaign extends Model
 
     public function totalAmountPercentage($mode =  'all')
     {
-        if($this->totalAmount($mode) > 0) {
-            if($mode == 'all') {
+        if ($this->totalAmount($mode) > 0) {
+            if ($mode == 'all') {
                 return ($this->totalAmount($mode) * 100) / $this->target;
-            } elseif($mode == 'received') {
+            } elseif ($mode == 'received') {
                 return ($this->totalAmount('received') * 100) / $this->totalAmount('all');
             }
         } else {
@@ -69,12 +69,17 @@ class Campaign extends Model
         }
     }
 
-    public function individualTarget($thousands_seperator = ',')
+    public function individualTarget($thousands_seperator = ',', $format = true)
     {
-        $totalUsers = User::count();
-        
-        if($totalUsers > 0) {
-            return number_format($this->target / $totalUsers, 2, '.', $thousands_seperator);
+        $totalUsers = User::whereYear('created_at', '<=', $this->created_at->year)->count();
+
+        if ($totalUsers > 0) {
+            $target = $this->target / $totalUsers;
+            if ($format) {
+                return number_format($target, 2, '.', $thousands_seperator);
+            }
+
+            return $target;
         } else {
             return 0;
         }
