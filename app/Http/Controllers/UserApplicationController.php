@@ -111,6 +111,7 @@ class UserApplicationController extends Controller
                 $user->dhiu_batch = $userApplication->dhiu_batch;
                 $user->father_name = $userApplication->father_name;
                 $user->mother_name = $userApplication->mother_name;
+                $user->state = $userApplication->state;
                 $user->district = $userApplication->district;
                 $user->address1 = $userApplication->address1;
                 $user->address2 = $userApplication->address2;

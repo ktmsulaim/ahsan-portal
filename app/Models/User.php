@@ -39,6 +39,7 @@ class User extends Authenticatable
         'dhiu_batch',
         'father_name',
         'mother_name',
+        'state',
         'district',
         'address1',
         'address2',

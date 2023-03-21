@@ -85,10 +85,45 @@
                 })
             }
 
-            showModal('#deleteModalTrigger', '#delete-modal')
-            showModal('#importMembersModalTrigger', '#modal-import')
-            showModal('#bulkEditTrigger', '#modal-bulkedit')
-            showModal('#addSponsorTrigger', '#add-sponsor-modal')
+            function setStateAndDistrictOptions() {
+                if(!$('#state').length) return;
+
+                let states = [];
+                $.getJSON("{{ asset('states.json') }}", function(data) {
+                    states = data;
+                    
+                    $.each(data, function(key, value){
+                        const option = $('<option/>').val(value.name).text(value.name).appendTo('#state');
+
+                        if(value.name === 'Kerala') {
+                            option.prop('selected', true);
+                            $('#state').trigger('change');
+                        }
+                    });
+                });
+
+                $('#state').on('change', function(e){
+                    const selected = e.target.value;
+                    const stateObject = states.find((state) => state.name === selected);
+
+                    if(!stateObject) return;
+
+                    $('#district option').remove().append('<option value="">--Select--</option>');
+                    
+                    $.each(stateObject.districts, function(key, value){
+                        $('<option/>').val(value.name).text(value.name).appendTo('#district');
+                    });
+
+                    $('#district').attr('disabled', false);
+                });
+            }
+
+            showModal('#deleteModalTrigger', '#delete-modal');
+            showModal('#importMembersModalTrigger', '#modal-import');
+            showModal('#bulkEditTrigger', '#modal-bulkedit');
+            showModal('#addSponsorTrigger', '#add-sponsor-modal');
+            
+            setStateAndDistrictOptions();
         })
     </script>
 

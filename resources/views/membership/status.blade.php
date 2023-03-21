@@ -26,8 +26,8 @@
                         <div class="card-header__title">Check status</div>
                     </div>
                     <div class="card-body card-form__body">
+                        @if (!$checked)
                         <p>Enter your registered email to check your application status.</p>
-
                         <form action="{{ route('membership.getStatus') }}" method="post">
                             @csrf
                             <input type="hidden" name="checked" value="true">
@@ -38,6 +38,7 @@
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
+                        @endif
 
                         <div class="mt-4">
                             @if ($user)
@@ -56,7 +57,13 @@
                                 <p class="text-danger">Sorry! no application was found</p>
                             @endif
                         </div>
+
                     </div>
+                    @if ($checked)
+                        <div class="card-footer">
+                            <a href="{{ route('membership.status') }}" class="btn btn-secondary btn-sm">Check again</a>
+                        </div>
+                    @endif
                 </div>
                 <p>Not yet applied? <a href="{{ route('membership.apply') }}">Apply now</a></p>
             </div>

@@ -154,40 +154,34 @@
                                         value="{{ old('dob') }}" required>
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="marital_status">Marital status</label>
+                                    <div>
+                                        <div class="custom-control custom-checkbox-toggle custom-control-inline mr-1">
+                                            <input type="hidden" name="marital_status" id="marital_status_input"
+                                                value="0">
+                                            <input data-target="#marital_status_input" type="checkbox"
+                                                id="marital_status" class="custom-control-input">
+                                            <label for="marital_status" class="custom-control-label"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="state">State <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="state" id="state"></select>
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="district">District <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="district" id="district" required>
+                                    <select class="form-control" name="district" id="district" disabled required>
                                         <option value="">--Select--</option>
-
-                                        <option value="ALAPPUZHA">ALAPPUZHA</option>
-
-                                        <option value="ERNAKULAM">ERNAKULAM</option>
-
-                                        <option value="IDUKKI">IDUKKI</option>
-
-                                        <option value="KANNUR">KANNUR</option>
-
-                                        <option value="KASARAGOD">KASARAGOD</option>
-
-                                        <option value="KOLLAM">KOLLAM</option>
-
-                                        <option value="KOTTAYAM">KOTTAYAM</option>
-
-                                        <option value="KOZHIKODE">KOZHIKODE</option>
-
-                                        <option value="MALAPPURAM">MALAPPURAM</option>
-
-                                        <option value="PALAKKAD">PALAKKAD</option>
-
-                                        <option value="PATHANAMTHITTA">PATHANAMTHITTA</option>
-
-                                        <option value="THIRUVANANTHAPURAM">THIRUVANANTHAPURAM</option>
-
-                                        <option value="THRISSUR">THRISSUR</option>
-
-                                        <option value="WAYANAD">WAYANAD</option>
-
                                     </select>
                                 </div>
                             </div>
@@ -228,22 +222,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="marital_status">Marital status</label>
-                                    <div>
-                                        <div class="custom-control custom-checkbox-toggle custom-control-inline mr-1">
-                                            <input type="hidden" name="marital_status" id="marital_status_input"
-                                                value="0">
-                                            <input data-target="#marital_status_input" type="checkbox"
-                                                id="marital_status" class="custom-control-input">
-                                            <label for="marital_status" class="custom-control-label"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row col-md-12">
                             <button class="btn btn-primary">Submit</button>
@@ -275,4 +253,5 @@
         </div>
     </div>
 </div>
+
 @include('components.footer')

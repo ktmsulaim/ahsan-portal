@@ -95,6 +95,10 @@
                                     <td>{{ $user->dob }}</td>
                                 </tr>
                                 <tr>
+                                    <th>State</th>
+                                    <td>{{ $user->state }}</td>
+                                </tr>
+                                <tr>
                                     <th>District</th>
                                     <td>{{ $user->district }}</td>
                                 </tr>

@@ -35,6 +35,7 @@ class MembershipApplyController extends Controller
             'dhiu_batch' => 'required',
             'father_name' => 'required',
             'mother_name' => 'required',
+            'state' => 'required',
             'district' => 'required',
             'address1' => 'required',
             'address2' => '',
@@ -54,7 +55,8 @@ class MembershipApplyController extends Controller
     public function status()
     {
         $user = null;
-        return view('membership.status', compact('user'));
+        $checked = false;
+        return view('membership.status', compact('user', 'checked'));
     }
 
     public function getStatus(Request $request)

@@ -106,6 +106,25 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label for="marital_status">Marital status</label>
+                                <div>
+                                    {{ $userApplication->marital_status == 1 ? 'Married' : 'Not married' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="district">State <span class="text-danger">*</span></label>
+                                <div>
+                                    {{ $userApplication->state }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label for="district">District <span class="text-danger">*</span></label>
                                 <div>
                                     {{ $userApplication->district }}
@@ -150,16 +169,6 @@
                                 <label for="phone_personal">Phone (Personal) <span class="text-danger">*</span></label>
                                 <div>
                                     {{ $userApplication->phone_personal }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="marital_status">Marital status</label>
-                                <div>
-                                    {{ $userApplication->marital_status == 1 ? 'Married' : 'Not married' }}
                                 </div>
                             </div>
                         </div>
