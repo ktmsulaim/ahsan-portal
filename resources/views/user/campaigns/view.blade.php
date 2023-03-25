@@ -85,7 +85,7 @@
                     <div class="flex">
                         <div class="card-header__title text-muted d-flex mb-2">Individual Target <span
                                 class="badge badge-primary ml-2">{{ $targetMetCount }}</span></div>
-                        <span class="h4 m-0">₹{{ $campaign->individualTarget() }}</span>
+                        <span class="h4 m-0">₹{{ $campaign->individualTarget('', true, $campaign->pivot->location) }}</span>
                     </div>
                     <div><i class="material-icons icon-muted icon-40pt ml-3">contacts</i></div>
                 </div>
@@ -140,7 +140,7 @@
                         @if (!auth()->user()->targetMet($campaign->id))
                             <span class="h4 m-0">₹{{ number_format(auth()->user()->totalAmount($campaign->id)) }}
                                 <small class="text-muted"> /
-                                    ₹{{ $campaign->individualTarget() }}</small> </span>
+                                    ₹{{ $campaign->individualTarget('', true, $campaign->pivot->location) }}</small> </span>
                         @else
                             <span class="text-success">Completed</span>
                         @endif

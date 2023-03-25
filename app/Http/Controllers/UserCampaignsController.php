@@ -5,25 +5,31 @@ namespace App\Http\Controllers;
 use App\Models\Campaign;
 use App\Models\Sponsor;
 use App\Models\User;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 
 class UserCampaignsController extends Controller
 {
     public function index()
     {
-        $campaigns = Campaign::orderBy('id', 'desc')->get();
-
-        return view('user.campaigns.index', compact('campaigns'));
+        return view('user.campaigns.index', ['user' => request()->user()]);
     }
 
     public function show(Campaign $campaign)
     {
-        $targetMetCount = User::usersWithTargetMetCount($campaign->individualTarget(''), $campaign->id);
+        $userCampaign = request()->user()->campaigns()->find($campaign->id);
+        $targetMetCount = User::usersWithTargetMetCount($campaign->individualTarget('', true, $userCampaign->pivot->location), $campaign->id);
         $targetMetPercentage = $targetMetCount > 0 ? ($targetMetCount * 100) / User::count() : 0;
         $topAmount = User::topAmountOfCampaign($campaign->id);
         $toppers = User::toppers(10, $campaign);
 
-        return view('user.campaigns.view', compact('campaign', 'targetMetCount', 'targetMetPercentage', 'topAmount', 'toppers'));
+        return view('user.campaigns.view', [
+            'campaign' => $userCampaign, 
+            'targetMetCount' => $targetMetCount, 
+            'targetMetPercentage' => $targetMetPercentage, 
+            'topAmount' => $topAmount, 
+            'toppers' => $toppers
+        ]);
     }
 
     public function sponsors(Request $request, Campaign $campaign)
@@ -92,5 +98,27 @@ class UserCampaignsController extends Controller
 
         echo json_encode($response);
         exit;
+    }
+
+    public function chooseLocation() {
+        $current = Campaign::current();
+
+        if(request()->user()->campaigns()->where('campaigns.id', $current->id)->exists()) {
+            return redirect()->route('home');
+        }
+
+        return view('user.campaigns.select_campaign', ['campaign' => Campaign::current()]);
+    }
+
+    public function updateCampaignLocation(Request $request) {
+       if(!$request->get('location')) {
+        Toastr::error('Location can\'t be empty');
+        return redirect()->back();
+       }
+
+       $request->user()->campaigns()->attach((Campaign::current())->id, ['location' => $request->get('location')]);
+       Toastr::success('Location has been saved!');
+
+       return redirect()->route('home');
     }
 }

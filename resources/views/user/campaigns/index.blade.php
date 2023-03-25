@@ -6,8 +6,8 @@
 
 @section('content')
         <div class="row">
-            @if ($campaigns && count($campaigns) > 0)
-                @foreach ($campaigns as $campaign)
+            @if (count($user->campaigns) > 0)
+                @foreach ($user->campaigns()->orderBy('created_at', 'desc')->get() as $campaign)
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
@@ -19,6 +19,9 @@
                                 </div>
                             </div>
                             <div class="card-footer">
+                                @if ($campaign->pivot->location)
+                                    <span class="badge badge-secondary">{{ $campaign->pivot->location }}</span>
+                                @endif
                                 @if ($campaign->status)
                                     <span class="badge badge-success">Enabled</span>
                                 @else

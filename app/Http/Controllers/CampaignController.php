@@ -45,10 +45,12 @@ class CampaignController extends Controller
             'name' => 'required',
             'description' => 'required',
             'target' => 'required|numeric',
-            'logo' => ''
+            'logo' => '',
+            'location_name' => 'required|array|min:1',
+            'location_target' => 'required|array|min:1'
         ]);
 
-        $campaign = Campaign::create($request->all());
+        $campaign = Campaign::create($this->formatData($request));
 
         $this->clearDefault($campaign->id);
 
@@ -67,12 +69,10 @@ class CampaignController extends Controller
      */
     public function show(Campaign $campaign)
     {
-        $targetMetCount = User::usersWithTargetMetCount($campaign->individualTarget(''), $campaign->id);
-        $targetMetPercentage = $targetMetCount > 0 ? ($targetMetCount * 100) / User::count() : 0;
         $topAmount = User::topAmountOfCampaign($campaign->id);
         $toppers = User::toppers(10, $campaign);
 
-        return view('admin.campaigns.view', compact('campaign', 'targetMetCount', 'targetMetPercentage', 'topAmount', 'toppers'));
+        return view('admin.campaigns.view', compact('campaign', 'topAmount', 'toppers'));
     }
 
     /**
@@ -99,10 +99,12 @@ class CampaignController extends Controller
             'name' => 'required',
             'description' => 'required',
             'target' => 'required|numeric',
-            'logo' => ''
+            'logo' => '',
+            'location_name' => 'required|array|min:1',
+            'location_target' => 'required|array|min:1'
         ]);
 
-        $campaign->update($request->all());
+        $campaign->update($this->formatData($request));
 
         $this->clearDefault($campaign->id);
 
@@ -172,5 +174,25 @@ class CampaignController extends Controller
                 $camp->save();
             });
         }
+    }
+
+    private function formatData(Request $request) {
+        $data = $request->only(['location_name', 'location_target']);
+        $locations = [];
+        
+        foreach($data['location_name'] as $key => $value) {
+            $locations[$value] = [
+                'target' => $data['location_target'][$key]
+            ];
+        }
+
+        return [
+            'name' => $request->get('name'),
+            'description' => $request->get('description'),
+            'target' => $request->get('target'),
+            'locations' => $locations,
+            'status' => $request->get('status'),
+            'active' => $request->get('active')
+        ];
     }
 }

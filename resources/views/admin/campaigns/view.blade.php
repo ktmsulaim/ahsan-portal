@@ -36,6 +36,16 @@
                                     <span class="badge badge-success">Active</span>
                                 @endif
                             </div>
+
+                            @if ($campaign->locations)    
+                                <div class="mt-3">
+                                    <p><b>Locations</b></p>
+
+                                    @foreach ($campaign->locations as $key => $value)
+                                        <span class="badge badge-secondary">{{ $key }}</span>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -44,6 +54,17 @@
     </div>
 
     <div class="row card-group-row">
+        <div class="col-lg-4 col-md-6 card-group-row__col">
+            <div class="card card-group-row__card">
+                <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
+                    <div class="flex">
+                        <div class="card-header__title text-muted d-flex mb-2">Members</div>
+                        <span class="h4 m-0">{{ $campaign->members->count() }}</span>
+                    </div>
+                    <div><i class="material-icons icon-muted icon-40pt ml-3">contacts</i></div>
+                </div>
+            </div>
+        </div>
         <div class="col-lg-4 col-md-6 card-group-row__col">
             <div class="card card-group-row__card">
                 <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
@@ -62,22 +83,6 @@
                         style="width: {{ $campaign->totalAmountPercentage() }}%;"
                         aria-valuenow="{{ $campaign->totalAmountPercentage() }}" aria-valuemin="0" aria-valuemax="100">
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6 card-group-row__col">
-            <div class="card card-group-row__card">
-                <div class="card-body-x-lg card-body d-flex flex-row align-items-center">
-                    <div class="flex">
-                        <div class="card-header__title text-muted d-flex mb-2">Individual Target <span
-                                class="badge badge-primary ml-2">{{ $targetMetCount }}</span></div>
-                        <span class="h4 m-0">₹{{ $campaign->individualTarget() }}</span>
-                    </div>
-                    <div><i class="material-icons icon-muted icon-40pt ml-3">contacts</i></div>
-                </div>
-                <div class="progress" style="height: 3px;">
-                    <div class="progress-bar" role="progressbar" style="width: {{ $targetMetPercentage }}%;"
-                        aria-valuenow="{{ $targetMetPercentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>

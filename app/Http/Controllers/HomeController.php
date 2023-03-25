@@ -20,9 +20,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $campaign = Campaign::current();
+        $user = request()->user();
+        $campaign = $user->campaigns()->where('active', 1)->first();
         $toppers = User::toppers();
-        $batches = Sponsor::batchWiseAmount($campaign->id);
+        $batches = $campaign ? Sponsor::batchWiseAmount($campaign->id) : [];
         
         return view('home', compact('campaign', 'toppers', 'batches'));
     }
@@ -50,6 +51,7 @@ class HomeController extends Controller
             'dhiu_batch' => 'required',
             'father_name' => 'required',
             'mother_name' => 'required',
+            'state' => 'required',
             'district' => 'required',
             'address1' => 'required',
             'address2' => '',

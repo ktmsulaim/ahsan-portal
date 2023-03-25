@@ -202,6 +202,7 @@ class AdminUsersController extends Controller
             'dhiu_batch' => 'required',
             'father_name' => 'required',
             'mother_name' => 'required',
+            'state' => 'required',
             'district' => 'required',
             'address1' => 'required',
             'address2' => '',

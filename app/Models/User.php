@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
@@ -13,12 +13,9 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $camp;
-
     public function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
-        $this->camp = Campaign::current();
     }
 
     /**
@@ -96,9 +93,13 @@ class User extends Authenticatable
         return $this->hasMany(Sponsor::class);
     }
 
+    public function activeCampaign(): Campaign {
+        return $this->campaigns()->where('active', 1)->first();
+    }
+
     public function totalAmount($camp_id = null, $received = null)
     {
-        $camp = $this->camp;
+        $camp = $this->activeCampaign();
 
         if ($camp_id) {
             $camp = Campaign::find($camp_id);
@@ -121,8 +122,8 @@ class User extends Authenticatable
 
     public function targetMet($camp_id = null)
     {
-        $camp = $camp_id ? Campaign::find($camp_id) : $this->camp;
-        $target = $camp->individualTarget('', false);
+        $camp = $camp_id ? $this->campaigns()->where('campaigns.id', $camp_id)->first() : $this->activeCampaign();
+        $target = $camp->individualTarget('', false, $camp->pivot->location);
         $amount = $this->totalAmount($camp_id);
 
         return $amount >= $target;
@@ -130,8 +131,8 @@ class User extends Authenticatable
 
     public function totalAmountPercentage($camp_id = null)
     {
-        $camp = $camp_id ? Campaign::find($camp_id) : $this->camp;
-        $target = $camp ? $camp->individualTarget('', false) : 0;
+        $camp = $camp_id ? $this->campaigns()->where('campaigns.id', $camp_id)->first() : $this->activeCampaign();
+        $target = $camp ? $camp->individualTarget('', false, $camp->pivot->location) : 0;
         $total = $this->totalAmount();
 
         if ($target > 0 && $total > 0) {
@@ -143,7 +144,7 @@ class User extends Authenticatable
 
     public function totalAmountReceived($type = 'amount', $camp_id = null)
     {
-        $camp = $camp_id ? Campaign::find($camp_id) : $this->camp;
+        $camp = $camp_id ? Campaign::find($camp_id) : $this->activeCampaign();
         if ($this->sponsors()->exists()) {
             $total = $this->totalAmount($camp_id);
             $received = $this->sponsors()->where(['campaign_id' => $camp->id, 'amount_received' => 1])->sum('amount');
@@ -190,37 +191,54 @@ class User extends Authenticatable
             ->first();
     }
 
-    public static function toppers($count = 10, $campaign = null)
+    public static function toppers($count = 10, $campaign = null, $location = null)
     {
         if (!$campaign) {
             $campaign = (new self)->camp;
         }
 
         if ($campaign) {
-            return DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
+            $query = DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
                 ->join("users", 'sponsors.user_id', '=', 'users.id')
-                ->where('sponsors.campaign_id', $campaign->id)
-                ->orderBy("total_amount", "desc")
+                ->where('sponsors.campaign_id', $campaign->id);
+
+            if ($location) {
+                $query->leftJoin('user_campaigns', 'user_campaigns.user_id', '=', 'users.id')
+                    ->where('user_campaigns.location', '=', $location);
+            }
+
+            return $query->orderBy("total_amount", "desc")
                 ->groupBy('users.id')
                 ->take($count)
                 ->get();
         }
     }
 
-    public static function topOfBatch($batch, $campaign = null)
+    public static function topOfBatch($batch, $campaign = null, $location =  null)
     {
         if (!$campaign) {
             $campaign = (new self)->camp;
         }
 
         if ($campaign) {
-            return DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
+            $query = DB::table('sponsors')->select("users.name", "users.id", "users.batch", DB::raw("SUM(sponsors.amount) as total_amount"))
                 ->join("users", 'sponsors.user_id', '=', 'users.id')
                 ->where('sponsors.campaign_id', $campaign->id)
-                ->where('users.batch', $batch)
-                ->orderBy("total_amount", "desc")
+                ->where('users.batch', $batch);
+            
+            if($location) {
+                $query->leftJoin('user_campaigns', 'user_campaigns.user_id', '=', 'users.id')
+                    ->where('user_campaigns.location', '=', $location);
+            }
+
+            return $query->orderBy("total_amount", "desc")
                 ->groupBy('users.id')
                 ->first();
         }
+    }
+
+    public function campaigns(): BelongsToMany
+    {
+        return $this->belongsToMany(Campaign::class, 'user_campaigns')->using(UserCampaign::class)->withPivot(['location'])->withTimestamps();;
     }
 }

@@ -120,13 +120,13 @@
                 </div>
 
                 <div class="tab-pane" id="campaigns">
-                    @if ($campaigns && count($campaigns) > 0)
+                    @if (count($user->campaigns) > 0)
                         <div class="row card-group-row">
-                            @foreach ($campaigns as $camp)
+                            @foreach ($user->campaigns()->orderBy('created_at', 'desc')->get() as $camp)
                             @php
                                 $totalSponsors = $user->sponsors()->where('campaign_id', $camp->id)->count();
                                 $totalAmount = $user->sponsors()->where('campaign_id', $camp->id)->sum('amount');
-                                $targetMet =  ($totalAmount >= $camp->individualTarget('')) ? 'Yes' : 'No';
+                                $targetMet =  ($totalAmount >= $camp->individualTarget('', true, $camp->pivot->location)) ? 'Yes' : 'No';
                                 $topAmount = $user->sponsors()->where('campaign_id', $camp->id)->orderBy('amount', 'desc')->first();
 
                             @endphp

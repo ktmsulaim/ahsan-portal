@@ -39,7 +39,7 @@ Route::get('/membership/status', [MembershipApplyController::class, 'status'])->
 Route::post('/membership/status', [MembershipApplyController::class, 'getStatus'])->name('membership.getStatus');
 
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth', 'campaign.select'])->group(function(){
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
     Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
@@ -54,6 +54,8 @@ Route::middleware(['auth'])->group(function(){
 |--------------------------------------------------------------------------
 */
     Route::get('/campaigns', [UserCampaignsController::class, 'index'])->name('user.campaigns.index');
+    Route::get('/campaigns/choose-location', [UserCampaignsController::class, 'chooseLocation'])->name('user.campaigns.chooseLocation')->withoutMiddleware('campaign.select');
+    Route::post('/campaigns/choose-location', [UserCampaignsController::class, 'updateCampaignLocation'])->name('user.campaigns.chooseLocation.update')->withoutMiddleware('campaign.select');
     Route::get('/campaigns/{campaign}', [UserCampaignsController::class, 'show'])->name('user.campaigns.show');
     
     /*
@@ -72,3 +74,28 @@ Route::middleware(['auth'])->group(function(){
 
 });
 
+// TODO: Remove this endpoint once done with bulk import
+Route::get('/register-campaigns-to-existing-users', function(){
+    $users = \App\Models\User::whereHas('sponsors')->get();
+
+    if(!count($users)) {
+        print("No users found!");
+        return;
+    }
+
+    print("{count($users)} users! <br>");
+
+    $campaigns = \App\Models\Campaign::where('active', 0)->get('id')->pluck('id')->toArray();
+
+    foreach($users as $user) {
+
+        foreach($campaigns as $campaign) {
+            if(!\App\Models\UserCampaign::where(['user_id' => $user->id, 'campaign_id' => $campaign])->exists()) {
+                print("Attaching {$campaign} to {$user->name} <br>");
+                $user->campaigns()->attach($campaign, ['location' => 'India']);
+            }
+        }
+        // $locations = ['India', 'UAE', 'Qatar'];
+        // $user->campaigns()->attach(4, ['location' => $locations[array_rand(['India', 'UAE', 'Qatar'])]]);
+    }
+});

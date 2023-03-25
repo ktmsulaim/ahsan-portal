@@ -29,6 +29,7 @@ class UsersImport implements ToModel, WithHeadingRow
             'dhiu_batch' => (String)$row['dhiu_batch'],
             'father_name' => $row['father_name'],
             'mother_name' => $row['mother_name'],
+            'state' => $row['state'],
             'district' => $row['district'],
             'address1' => $row['address1'],
             'address2' => $row['address2'],

@@ -14,7 +14,7 @@
         <div class="col-md-12">
             @if ($campaign)
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h4>{{ $campaign->name }} <br> <small>Summary</small></h4>
+                    <h4>{{ $campaign->name }} <span class="badge badge-secondary">{{ $campaign->pivot->location }}</span> <br> <small>Summary</small></h4>
 
                     @include('components.user.add_sponsor')
                 </div>
@@ -34,7 +34,7 @@
                                     @if (!auth()->user()->targetMet())
                                         <span class="h4 m-0">₹{{ number_format(auth()->user()->totalAmount()) }}
                                             <small class="text-muted"> /
-                                                ₹{{ $campaign->individualTarget() }}</small> </span>
+                                                ₹{{ $campaign->individualTarget(',', true, $campaign->pivot->location) }}</small> </span>
                                     @else
                                         <span class="text-success">Completed</span>
                                     @endif
