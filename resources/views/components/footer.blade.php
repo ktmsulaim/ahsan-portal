@@ -94,12 +94,22 @@
                     
                     $.each(data, function(key, value){
                         const option = $('<option/>').val(value.name).text(value.name).appendTo('#state');
-
-                        if(value.name === 'Kerala') {
-                            option.prop('selected', true);
-                            $('#state').trigger('change');
+                        
+                        if(!$('#state options:selected').length) {
+                            if(value.name === 'Kerala') {
+                                option.prop('selected', true);
+                                $('#state').trigger('change');
+                            }
                         }
+                        
                     });
+                    
+                    const oldValue = $('#state').data('state');
+                    if(oldValue) {
+                        $('#state').val(oldValue);
+                        $('#state').trigger('change');
+                    }
+
                 });
 
                 $('#state').on('change', function(e){
@@ -113,8 +123,15 @@
                     $.each(stateObject.districts, function(key, value){
                         $('<option/>').val(value.name).text(value.name).appendTo('#district');
                     });
+                    
+                    const oldValue = $('#district').data('district');
+
+                    if(oldValue) {
+                        $('#district').val(oldValue);
+                    }
 
                     $('#district').attr('disabled', false);
+                    
                 });
             }
 
