@@ -47,6 +47,22 @@
                                     <option value="1">Yes</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="payment_type">Payment Type</label>
+                                <select name="payment_type" id="payment_type" class="form-control" required>
+                                    <option value="One time">One time</option>
+                                    <option value="Recurring">Recurring</option>
+                                </select>
+                            </div>
+                            <div id="recurring-payment-options">
+                                <div class="form-group">
+                                    <label for="payment_type_interval">Interval</label>
+                                    <select name="payment_type_interval" id="payment_type_interval" class="form-control" required>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="Yearly">Yearly</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="advanced">
                             <div class="form-group">
@@ -90,3 +106,21 @@
         </div> <!-- // END .modal-content -->
     </div> <!-- // END .modal-dialog -->
 </div> <!-- // END .modal -->
+
+@section('scripts')    
+<script>
+    $(function(){
+        const recurringPaymentOptions = $('#recurring-payment-options');
+
+        recurringPaymentOptions.hide();
+
+        $('#payment_type').change(function(){
+            if($(this).val() === 'Recurring') {
+                recurringPaymentOptions.show();
+            } else {
+                recurringPaymentOptions.hide();
+            }
+        })
+    })
+</script>
+@endsection

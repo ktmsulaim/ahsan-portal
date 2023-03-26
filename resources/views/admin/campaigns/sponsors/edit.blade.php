@@ -62,6 +62,30 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="payment_type">Payment Type</label>
+                                    <select name="payment_type" id="payment_type" class="form-control" required>
+                                        <option {{ $sponsor->payment_type === 'One time' ? 'selected' : null }} value="One time">One time</option>
+                                        <option {{ $sponsor->payment_type === 'Recurring' ? 'selected' : null }} value="Recurring">Recurring</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="recurring-payment-options">
+                                    <div class="form-group">
+                                        <label for="payment_type_interval">Interval</label>
+                                        <select name="payment_type_interval" id="payment_type_interval" class="form-control" required>
+                                            <option value="Monthly">Monthly</option>
+                                            <option value="Yearly">Yearly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -134,4 +158,26 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')    
+<script>
+    $(function(){
+        const recurringPaymentOptions = $('#recurring-payment-options');
+
+        recurringPaymentOptions.hide();
+
+        $('#payment_type').change(function(){
+            if($(this).val() === 'Recurring') {
+                recurringPaymentOptions.show();
+            } else {
+                recurringPaymentOptions.hide();
+            }
+        });
+
+        if($('#payment_type').val() === 'Recurring') {
+            recurringPaymentOptions.show();
+        }
+    })
+</script>
 @endsection

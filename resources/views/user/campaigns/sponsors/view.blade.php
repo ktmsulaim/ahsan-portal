@@ -24,7 +24,7 @@
                     <div class="table-responsive">
                         <table class="table border">
                             <tr>
-                                <th width="150">Name</th>
+                                <th width="180">Name</th>
                                 <td>{{ $sponsor->name }}</td>
                             </tr>
                             <tr>
@@ -49,6 +49,16 @@
                                     @endif
                                 </td>
                             </tr>
+                            <tr>
+                                <th>Payment Type</th>
+                                <td>{{ $sponsor->payment_type }}</td>
+                            </tr>
+                            @if ($sponsor->payment_type === 'Recurring')
+                            <tr>
+                                <th>Payment Interval</th>
+                                <td>{{ $sponsor->payment_type_interval }}</td>
+                            </tr>
+                            @endif
                             <tr>
                                 <th>Whatsapp</th>
                                 <td>{{ $sponsor->whatsapp }}</td>

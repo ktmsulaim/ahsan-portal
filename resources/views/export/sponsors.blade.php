@@ -7,6 +7,8 @@
             <th>Phone</th>
             <th>Amount</th>
             <th>Amount received</th>
+            <th>Payment type</th>
+            <th>Payment interval</th>
             <th>Whatsapp</th>
             <th>Mode</th>
             <th>Transaction ID</th>
@@ -29,6 +31,8 @@
                     <td>{{ $sponsor->phone }}</td>
                     <td>{{ number_format($sponsor->amount) }}</td>
                     <td>{{ $sponsor->amount_received == 1 ? 'Yes' : 'No' }}</td>
+                    <td>{{ $sponsor->payment_type }}</td>
+                    <td>{{ $sponsor->payment_type === 'Recurring' ? $sponsor->payment_type_interval : null }}</td>
                     <td>{{ $sponsor->whatsapp }}</td>
                     <td>{{ $sponsor->mode == 1 ? 'Cash' : 'Bank transfer' }}</td>
                     <td>{{ $sponsor->transaction_id }}</td>

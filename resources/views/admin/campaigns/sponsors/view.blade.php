@@ -45,6 +45,16 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th>Payment Type</th>
+                                <td>{{ $sponsor->payment_type }}</td>
+                            </tr>
+                            @if ($sponsor->payment_type === 'Recurring')
+                            <tr>
+                                <th>Payment Interval</th>
+                                <td>{{ $sponsor->payment_type_interval }}</td>
+                            </tr>
+                            @endif
+                            <tr>
                                 <th>Whatsapp</th>
                                 <td>{{ $sponsor->whatsapp }}</td>
                             </tr>

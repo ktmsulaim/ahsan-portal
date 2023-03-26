@@ -43,6 +43,7 @@ class User extends Authenticatable
         'phone_home',
         'phone_personal',
         'marital_status',
+        'is_coordinator'
     ];
 
     /**
@@ -94,7 +95,7 @@ class User extends Authenticatable
     }
 
     public function activeCampaign(): Campaign {
-        return $this->campaigns()->where('active', 1)->first();
+        return $this->campaigns()->active()->first() ?? Campaign::current();
     }
 
     public function totalAmount($camp_id = null, $received = null)
@@ -194,7 +195,7 @@ class User extends Authenticatable
     public static function toppers($count = 10, $campaign = null, $location = null)
     {
         if (!$campaign) {
-            $campaign = (new self)->camp;
+            $campaign = (new self)->activeCampaign();
         }
 
         if ($campaign) {
