@@ -18,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/campaigns/stats/batchWise/notReceived', [CampaignStatsController::class, 'batchWiseNotReceived']);
 Route::get('/campaigns/stats/batchWise', [CampaignStatsController::class, 'batchWiseTotalAmount']);
 Route::get('/campaigns/stats/toppers', [CampaignStatsController::class, 'toppers']);
+Route::get('/campaigns/stats/target', [CampaignStatsController::class, 'target']);

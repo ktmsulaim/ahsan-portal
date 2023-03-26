@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Campaign;
 use App\Models\Sponsor;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CampaignStatsController extends Controller
@@ -113,6 +114,30 @@ class CampaignStatsController extends Controller
                 $i++;
             }
         }
+
+        return response()->json($data);
+    }
+    
+    public function target(Request $request)
+    {
+        $camp = Campaign::current();
+        $data = "*" . Carbon::today()->format('d-m-Y') . "*\n\n";
+        $data .= "*" . $camp->name . "*\n\n";
+        
+        $data .= "Target: *₹" . number_format($camp->target) . "*\n";
+        $data .= "Total sponsored: *₹" . number_format($camp->totalAmount()) . "*\n";
+        $data .= "Total amount received: *₹" . number_format($camp->totalAmount('received')) . "*\n\n";
+        
+        $data .= "*Locations*\n\n";
+        if($camp->locations && count($camp->locations)) {
+            foreach($camp->locations as $key => $value) {
+                $data .= $key . ":-\n";
+                $data .= "Target: *₹" . number_format($value['target']) . "*\n";
+                $data .= "Total sponsored: *₹" . number_format($camp->totalAmount('all', $key)) . "*\n";
+                $data .= "Total amount received: *₹" . number_format($camp->totalAmount('received', $key)) . "*\n\n";
+            }
+        }
+        
 
         return response()->json($data);
     }

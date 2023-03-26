@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class Campaign extends Model
@@ -48,13 +49,28 @@ class Campaign extends Model
         }
     }
 
-    public function totalAmount($mode = 'all')
+    public function totalAmount($mode = 'all', $location = null)
     {
         if ($this->sponsors()->exists()) {
-            if ($mode == 'all') {
-                return $this->sponsors->sum('amount');
-            } elseif ($mode == 'received') {
-                return $this->sponsors()->where('amount_received', 1)->sum('amount');
+            
+            if($location) {
+                $query = DB::table('sponsors')
+                ->leftJoin('user_campaigns', 'sponsors.user_id', '=', 'user_campaigns.user_id')
+                ->where('sponsors.campaign_id', '=', $this->id)
+                ->where('user_campaigns.campaign_id', '=', $this->id)
+                ->where('user_campaigns.location', '=', $location);
+
+                if($mode == 'received') {
+                    $query->where('sponsors.amount_received', '=', 1);
+                }
+                
+                return $query->sum('sponsors.amount');
+            } else {
+                if ($mode == 'all') {
+                    return $this->sponsors->sum('amount');
+                } elseif ($mode == 'received') {
+                    return $this->sponsors()->where('amount_received', 1)->sum('amount');
+                }
             }
         } else {
             return 0;
