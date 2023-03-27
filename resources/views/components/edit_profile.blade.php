@@ -168,6 +168,24 @@
         </div>
     </div>
 </div>
+@if ($is_admin)    
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control"
+                value="">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="password-confirmation">Confirm Password</label>
+            <input type="password" name="password_confirmation" id="password-confirmation" class="form-control"
+                value="">
+        </div>
+    </div>
+</div>
+@endif
 
 <div class="row col-md-12">
     <button class="btn btn-primary">Submit</button>

@@ -57,7 +57,8 @@
         </div>
         <div class="form-group text-center">
             <button class="btn btn-primary mb-5" type="submit">Login</button><br>
-            Don't have an account? <a class="text-body text-underline" href="{{ route('membership.apply') }}">Apply!</a>
+            <p>Forgot password? <a class="text-body text-underline" href="{{ route('password.request') }}">Reset here</a></p>
+            <p>Don't have an account? <a class="text-body text-underline" href="{{ route('membership.apply') }}">Apply!</a></p>
         </div>
     </form>
 @endsection

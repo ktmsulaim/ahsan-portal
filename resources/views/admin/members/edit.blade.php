@@ -15,7 +15,7 @@
                         enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
-                        @include('components.edit_profile', ['user' => $user])
+                        @include('components.edit_profile', ['user' => $user, 'is_admin' => true])
                     </form>
                 </div>
             </div>

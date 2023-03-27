@@ -212,7 +212,10 @@ class AdminUsersController extends Controller
         ];
 
         if ($type == 'update') {
-            unset($validations['password']);
+            if(!request()->has('password') || !request()->get('password')) {
+                unset($validations['password']);
+            }
+
             $validations['email'] = 'required|email|unique:users,email,'.$id;
         }
         

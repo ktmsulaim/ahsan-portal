@@ -6,7 +6,6 @@
 <div class="mdk-header-layout js-mdk-header-layout">
 
     <!-- Header -->
-
     <div id="header" class="mdk-header bg-dark js-mdk-header m-0" data-fixed>
         <div class="mdk-header__content">
 

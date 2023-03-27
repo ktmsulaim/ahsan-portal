@@ -10,7 +10,7 @@
                 <div class="card-body card-form__body">
                     <form id="userForm" action="{{ route('profile.update') }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        @include('components.edit_profile', ['user' => $user])
+                        @include('components.edit_profile', ['user' => $user, 'is_admin' => false])
                     </form>
                 </div>
             </div>
