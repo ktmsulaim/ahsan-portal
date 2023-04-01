@@ -74,7 +74,7 @@
                                 <div class="form-group">
                                     <label for="batch">Batch <span class="text-danger">*</span></label>
                                     <select name="batch" id="batch" class="form-control" required>
-                                        @for ($i = 1; $i <= $dhic_batch; $i++)
+                                        @for ($i = 1; $i <= setting('dhic_batch', 9); $i++)
                                             <option value="Batch {{ $i }}">Batch {{ $i }}</option>
                                         @endfor
                                     </select>
@@ -121,7 +121,7 @@
                             <div class="col-md-6">
                                 <label for="dhiu_batch">Batch (DHIU) <span class="text-danger">*</span></label>
                                 <select name="dhiu_batch" id="dhiu_batch" class="form-control" required>
-                                    @for ($i = 13; $i <= $dhiu_batch; $i++)
+                                    @for ($i = 13; $i <= setting('dhiu_batch', 29); $i++)
                                         <option value="Batch {{ $i }}">Batch {{ $i }}</option>
                                     @endfor
                                     <option value="None of above">None of above</option>

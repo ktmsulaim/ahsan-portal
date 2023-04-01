@@ -101,6 +101,7 @@
                                     <option value="India">India</option>
                                     <option value="UAE">UAE</option>
                                     <option value="Qatar">Qatar</option>
+                                    <option value="Bahrain">Bahrain</option>
                                 </select>
                             </div>
                         </div>

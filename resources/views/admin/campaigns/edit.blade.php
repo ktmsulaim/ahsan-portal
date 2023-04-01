@@ -76,6 +76,7 @@
                                             <option {{ $key == 'India' ? 'selected' : null }} value="India">India</option>
                                             <option {{ $key == 'UAE' ? 'selected' : null }} value="UAE">UAE</option>
                                             <option {{ $key == 'Qatar' ? 'selected' : null }} value="Qatar">Qatar</option>
+                                            <option {{ $key == 'Bahrain' ? 'selected' : null }} value="Bahrain">Bahrain</option>
                                         </select>
                                     </div>
                                 </div>
@@ -167,6 +168,7 @@
                                             <option value="India">India</option>
                                             <option value="UAE">UAE</option>
                                             <option value="Qatar">Qatar</option>
+                                            <option value="Bahrain">Bahrain</option>
                                         </select>
                                     </div>
                                 </div>

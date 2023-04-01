@@ -12,12 +12,7 @@ class MembershipApplyController extends Controller
 {
     public function apply()
     {
-        $dhic_batch = setting('dhic_batch', 8);
-        $dhiu_batch = setting('dhiu_batch', 28);
-        return view('membership.apply', [
-            'dhic_batch' => $dhic_batch,
-            'dhiu_batch' => $dhiu_batch,
-        ]);
+        return view('membership.apply');
     }
 
     public function store(Request $request)
