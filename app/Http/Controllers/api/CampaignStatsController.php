@@ -15,7 +15,8 @@ class CampaignStatsController extends Controller
     {
         $batches = User::select('batch')->groupBy('batch')->get();
         $camp = Campaign::current();
-        $data = "*" . $camp->name . "*\n";
+        $data = "*" . Carbon::today()->format('d-m-Y') . "*\n\n";
+        $data .= "*" . $camp->name . "*\n";
         $data .= "\nTotal Amount Sponsored: *₹" . number_format($camp->totalAmount()) . "*\n";
         $data .= "\nTotal Amount Received: *₹" . number_format($camp->totalAmount('received')) . "*\n";
         $data .= "\nTotal Amount Remaining: *₹" . number_format($camp->totalAmount('all') - $camp->totalAmount('received')) . "*\n";
@@ -58,7 +59,8 @@ class CampaignStatsController extends Controller
     {
         $batches = User::select('batch')->groupBy('batch')->get();
         $camp = Campaign::current();
-        $data = "*" . $camp->name . "*\n\n";
+        $data = "*" . Carbon::today()->format('d-m-Y') . "*\n\n";
+        $data .= "*" . $camp->name . "*\n\n";
         $title = "Batch Wise Amount Not Received";
 
         $data .= "```" . $title . "```\n\n";
