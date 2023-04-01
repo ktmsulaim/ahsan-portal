@@ -101,7 +101,8 @@ class CampaignStatsController extends Controller
     public function toppers(Request $request)
     {
         $camp = Campaign::current();
-        $data = "*" . $camp->name . "*\n\n";
+        $data = "*" . Carbon::today()->format('d-m-Y') . "*\n\n";
+        $data .= "*" . $camp->name . "*\n\n";
         $title = "Toppers";
 
         $data .= "```" . $title . "```\n\n";
