@@ -9,6 +9,7 @@
                 <select class="form-control" name="lang" id="lang" required>
                     <option value="ml">Malayalam</option>
                     <option value="ar" disabled>Arabic</option>
+                    <option value="en" disabled>English</option>
                 </select>
             </div>
             <div class="form-group">

@@ -13,7 +13,7 @@ class CampaignStatsController extends Controller
 {
     public function batchWiseTotalAmount()
     {
-        $batches = User::select('batch')->groupBy('batch')->get();
+        $batches = User::select('batch')->groupBy('batch')->orderByRaw("CAST(SUBSTRING_INDEX(batch, ' ', -1) AS UNSIGNED)")->get();
         $camp = Campaign::current();
         $data = "*" . Carbon::today()->format('d-m-Y') . "*\n\n";
         $data .= "*" . $camp->name . "*\n";
@@ -57,7 +57,7 @@ class CampaignStatsController extends Controller
 
     public function batchWiseNotReceived()
     {
-        $batches = User::select('batch')->groupBy('batch')->get();
+        $batches = User::select('batch')->groupBy('batch')->orderByRaw("CAST(SUBSTRING_INDEX(batch, ' ', -1) AS UNSIGNED)")->get();
         $camp = Campaign::current();
         $data = "*" . Carbon::today()->format('d-m-Y') . "*\n\n";
         $data .= "*" . $camp->name . "*\n\n";

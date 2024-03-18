@@ -13,22 +13,45 @@ class LetterpadPrintController extends Controller
     {
         $donor = $request->get('name_in_lang');
         $amount = $request->get('amount_in_lang');
+        $lang = $request->get('lang');
         $ref = $sponsor->refNo();
         $date = Carbon::now()->format('d-m-Y');
+
+        if(!in_array($lang, ['ml', 'ar', 'en'])) {
+            toastr()->error("Unsupported language", "Error");
+            return redirect()->back();
+        }
+
+        $lang_conf = [
+            'ml' => [
+                'default_font_size'    => '12',
+	            'default_font'         => 'rachana',
+            ],
+            'ar' => [
+                'default_font_size'    => '14',
+	            'default_font'         => 'amiri',
+                'autoScriptToLang' => true,
+                'autoLangToFont' => true,
+                'autoArabic' => true
+            ],
+            'en' => [
+                'default_font_size'    => '12',
+	            'default_font'         => 'calibri',
+            ],
+        ];
         
         $pdf = LaravelMpdf::loadView('letterpad.print', [
             'donor' => $donor,
             'amount' => $amount,
             'ref' => $ref,
             'date' => $date,
-            'sponsor' => $sponsor
-        ], [], [
-            'default_font_size'    => '12',
-	        'default_font'         => 'rachana',
+            'sponsor' => $sponsor,
+            'lang' => $lang
+        ], [], array_merge([
             'margin_left'          => 15,
             'margin_right'         => 15,
-            'margin_top'           => 80,
-        ]);
+            'margin_top'           => 70,
+        ], $lang_conf[$lang]));
 
 
         $mpdf = $pdf->getMpdf();
@@ -42,6 +65,7 @@ class LetterpadPrintController extends Controller
 
         
 
-        return $pdf->stream('document.pdf');
+        // return $pdf->stream("Muvasath_Thanks_letter_{$sponsor->id}_{$date}.pdf");
+        return $pdf->stream();
     }
 }

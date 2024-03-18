@@ -37,6 +37,14 @@ return [
 			'R' => 'RIT-Rachana-Regular.ttf',
 			'B' => 'RIT-Rachana-Bold.ttf',
 			'useOTL' => 0x80
+		],
+		'calibri' => [
+			'R' => 'Calibri-Regular.ttf',
+			'B' => 'Calibri-Bold.ttf'
+		],
+		'amiri' => [
+			'R' => 'Amiri-Regular.ttf',
+			'B' => 'Amiri-Bold.ttf'
 		]
 	]
 ];
