@@ -61,7 +61,7 @@
         @if ($lang === 'ml')
             <div style="font-size: 18px;">
                 <p>ബഹുമാനപ്പെട്ട &nbsp; &nbsp;<span
-                        style="color: red; margin-left: 5px">{{ $donor ? $donor : $sponsor->name }}</span> &nbsp;
+                        style="font-weight: bold; margin-left: 5px">{{ $donor ? $donor : $sponsor->name }}</span> &nbsp;
                     &nbsp;അവർകൾക്ക്,</p>
 
                 <p>ക്ഷേമവും സൗഖ്യവും നേരുന്നു....</p>
