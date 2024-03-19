@@ -65,7 +65,7 @@ class LetterpadPrintController extends Controller
 
         
 
-        return $pdf->download("Muvasath_Thanks_letter_{$sponsor->id}_{$date}.pdf");
+        return $pdf->download("Muvasath_Thanks_letter_{$lang}_{$sponsor->id}_{$date}.pdf");
         // return $pdf->stream();
     }
 }

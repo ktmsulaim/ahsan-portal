@@ -24,24 +24,18 @@
         }
 
         .date {
+            margin: 0;
             font-size: 23px;
-            padding-right: 140px;
             line-height: 23px;
             text-align: right;
         }
 
         .date.ar {
             font-size: 20px;
-            padding-right: 130px;
-            line-height: 20px;
-            padding-top: 0px;
         }
 
         .date.en {
             font-size: 20px;
-            padding-right: 130px;
-            line-height: 20px;
-            padding-top: -3px;
         }
     </style>
 </head>
@@ -51,12 +45,9 @@
         <div class="ref" style="float: left;">Ref: {{ $ref }}</div>
         <div class="date" style="float: right">{{ $date }}</div>
     </div> --}}
-    <table class="ref-date">
-        <tr>
-            <td class="ref"></td>
-            <td class="date {{$lang}}">{{ $date }}</td>
-        </tr>
-    </table>
+    <p class="date {{$lang}}">
+        <i>Date:</i> {{ $date }}
+    </p>
     <div class="content">
         @if ($lang === 'ml')
             <div style="font-size: 18px;">
