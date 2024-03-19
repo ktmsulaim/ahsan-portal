@@ -57,9 +57,10 @@
             <td class="date {{$lang}}">{{ $date }}</td>
         </tr>
     </table>
-    <div style="margin-top: 25px" class="content">
+    <div class="content">
         @if ($lang === 'ml')
             <div style="font-size: 18px;">
+                <p>അസ്സലാമു അലൈകും</p>
                 <p>ബഹുമാനപ്പെട്ട &nbsp; &nbsp;<span
                         style="font-weight: bold; margin-left: 5px">{{ $donor ? $donor : $sponsor->name }}</span> &nbsp;
                     &nbsp;അവർകൾക്ക്,</p>
@@ -107,15 +108,12 @@
                 <p>
                     <b>{{ $donor ? $donor : $sponsor->name }}</b>
                 </p>
-                <p>Greetings, mate!</p>
-                <p style="text-align: justify; line-height: 25px;">We are excited to convey our heartfelt gratitude for your tremendous
-                    contribution to Darul Hasanath Islamic College through your involvement in the Muvasath project.</p>
-                <p>We successfully received your donation of <strong>{{ $amount ? $amount : $sponsor->amount }}</strong></p>
-                <p style="text-align: justify; line-height: 25px;">Helping individuals who lack access to education understand the
-                    magnificent lessons of Islam is the most noble deed we can do. We
-                    respectfully urge that you share this message with your friends and
-                    family.</p>
-                <p>May the Almighty reward us for our good deeds and fulfill our good intentions!</p>
+                <p>Greetings, dear brother!</p>
+                
+                <p style="text-align: justify; line-height: 25px;">We're truly grateful  to convey our heartfelt appreciation for your generous support of Darul Hasanath Islamic College through your involvement in the Muvasath project.</p>
+                <p>Your donation of <strong>{{ $amount ? $amount : $sponsor->amount }}</strong> has been received with immense gratitude.</p>
+                <p style="text-align: justify; line-height: 25px;">Facilitating access to education for those in need to understand the profound teachings of Islam is indeed among the noblest of deeds. We respectfully encourage you to share this message with your friends and family.</p>
+                <p>May the Almighty reward us for our good deeds and fulfill our noble intentions!</p>
             </div>
         @endif
     </div>
