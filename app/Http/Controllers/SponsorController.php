@@ -211,9 +211,15 @@ class SponsorController extends Controller
             'place' => 'required',
             'phone' => 'required',
             'amount' => 'required',
+            'amount_received' => 'required|in:0,1',
+            'payment_type' => 'required|in:One time,Recurring',
         ]);
 
-        Sponsor::create($request->all());
+        $data = $request->all();
+        if ($request->input('mode') === '' || $request->input('mode') === null) {
+            $data['mode'] = 1;
+        }
+        Sponsor::create($data);
 
         Toastr::success('The sposor was added successfully');
 
@@ -256,9 +262,15 @@ class SponsorController extends Controller
             'place' => 'required',
             'phone' => 'required',
             'amount' => 'required',
+            'amount_received' => 'required|in:0,1',
+            'payment_type' => 'required|in:One time,Recurring',
         ]);
 
-        $sponsor->update($request->all());
+        $data = $request->all();
+        if ($request->input('mode') === '' || $request->input('mode') === null) {
+            $data['mode'] = 1;
+        }
+        $sponsor->update($data);
 
         Toastr::success('The sponsor has been updated', 'Updated');
 

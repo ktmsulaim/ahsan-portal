@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\api\CampaignStatsController;
 use App\Models\Campaign;
 use App\Models\Sponsor;
 use App\Models\User;
@@ -15,6 +16,51 @@ class ReportController extends Controller
     {
         $camp = Campaign::current();
         return view('admin.reports.index', compact('camp'));
+    }
+
+    public function whatsappIndex()
+    {
+        $camp = Campaign::current();
+        return view('admin.reports.whatsapp_index', compact('camp'));
+    }
+
+    public function whatsappShow(Request $request)
+    {
+        $type = $request->get('type');
+        $allowed = ['batchWise', 'batchWiseNotReceived', 'toppers', 'target'];
+        if (!$type || !in_array($type, $allowed)) {
+            Toastr::error('Invalid report type', 'Report not found');
+            return Redirect::route('admin.reports.whatsapp');
+        }
+
+        $controller = app()->make(CampaignStatsController::class);
+        if ($type === 'batchWise') {
+            $response = $controller->batchWiseTotalAmount();
+        } elseif ($type === 'batchWiseNotReceived') {
+            $response = $controller->batchWiseNotReceived();
+        } elseif ($type === 'toppers') {
+            $response = $controller->toppers($request);
+        } else {
+            $response = $controller->target($request);
+        }
+
+        $text = $response->getData();
+        if (is_array($text)) {
+            $text = $text[0] ?? '';
+        }
+
+        $titles = [
+            'batchWise' => 'Batch wise total amount',
+            'batchWiseNotReceived' => 'Batch wise amount not received',
+            'toppers' => 'Toppers',
+            'target' => 'Target',
+        ];
+
+        return view('admin.reports.whatsapp_show', [
+            'type' => $type,
+            'title' => $titles[$type],
+            'text' => $text,
+        ]);
     }
 
     public function show(Request $request)

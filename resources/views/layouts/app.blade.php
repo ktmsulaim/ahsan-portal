@@ -83,7 +83,7 @@
             <div class="container-fluid page__container">
                 <div class="navbar navbar-secondary navbar-light navbar-expand-sm p-0">
                     <button class="navbar-toggler navbar-toggler-right" data-toggle="collapse"
-                        data-target="#navbarsExample03" type="button">
+                        data-target="#navbarsExample03" type="button" aria-label="Toggle menu">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 

@@ -5,10 +5,12 @@
 @endsection
 
 @section('action_button')
-    <a href="{{ route('admin.users.create') }}" class="btn btn-success ml-1"><span
-            class="material-icons mr-2">person_add</span> Add</a>
-    <button class="btn btn-info ml-1" id="importMembersModalTrigger"><span class="material-icons mr-2">import_export</span>
-        Import</button>
+    <div class="page-actions page-actions--members">
+        <a href="{{ route('admin.users.create') }}" class="btn btn-success ml-1"><span
+                class="material-icons mr-2">person_add</span> Add</a>
+        <button class="btn btn-info ml-1" id="importMembersModalTrigger"><span class="material-icons mr-2">import_export</span>
+            Import</button>
+    </div>
 @endsection
 
 @section('content')
@@ -80,7 +82,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card members-table-card">
                 <div class="card-body table-responsive">
                     <div class="row my-2">
                         <div class="col-md-4">
@@ -96,15 +98,15 @@
                             </div>
                         </div>
                     </div>
-                    <table id="membersTable" class="table">
+                    <table id="membersTable" class="table members-table">
                         <thead>
                             <tr>
-                                <td>AD.NO</td>
-                                <td>Photo</td>
-                                <td>Name</td>
-                                <td>Phone</td>
-                                <td>Email</td>
-                                <td></td>
+                                <th>AD.NO</th>
+                                <th>Photo</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -142,13 +144,21 @@
                 'createdRow': function(row, data, dataIndex) {
                     $(row).attr('data-id', data.id);
                 },
+                'columnDefs': [
+                    { targets: 0, createdCell: function(td) { td.setAttribute('data-label', 'AD.NO'); } },
+                    { targets: 1, createdCell: function(td) { td.setAttribute('data-label', 'Photo'); } },
+                    { targets: 2, createdCell: function(td) { td.setAttribute('data-label', 'Name'); } },
+                    { targets: 3, createdCell: function(td) { td.setAttribute('data-label', 'Phone'); } },
+                    { targets: 4, createdCell: function(td) { td.setAttribute('data-label', 'Email'); } },
+                    { targets: 5, createdCell: function(td) { td.setAttribute('data-label', 'Action'); } }
+                ],
                 'columns': [{
                         data: 'adno'
                     },
                     {
                         data: 'photo',
                         render: function(data, type, full, meta) {
-                            return `<img width="60" class="img-circle" src="${data}" >`;
+                            return `<img width="60" class="img-circle" src="${data}" alt="">`;
                         }
                     },
                     {
@@ -163,7 +173,7 @@
                     {
                         data: 'url',
                         render: function(data) {
-                            return `<a class="btn btn-sm" href="${data.show}"><span class="material-icons">visibility</span></a><a class="btn btn-sm" href="${data.edit}"><span class="material-icons">create</span></a>`;
+                            return `<div class="member-actions"><a class="btn btn-sm btn-member-action" href="${data.show}"><span class="material-icons">visibility</span> View</a><a class="btn btn-sm btn-member-action" href="${data.edit}"><span class="material-icons">create</span> Edit</a></div>`;
                         },
                         orderable: false
                     }
@@ -190,6 +200,7 @@
                 editWrapper.hide();
 
                 $('#membersTable').on('click', 'tbody tr', function(e) {
+                    if ($(e.target).closest('a.btn-member-action').length) return;
                     $(this).toggleClass('selected');
                     const id = $(this).data('id');
 
@@ -207,8 +218,6 @@
                     } else {
                         editWrapper.hide();
                     }
-
-                    console.log(selected);
                 });
 
                 if (selected && selected.length > 0) {

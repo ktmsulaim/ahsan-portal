@@ -1,20 +1,22 @@
-@extends('layouts.auth')
+@extends('layouts.auth', ['title' => 'Session expired'])
 
 @section('content')
-    <div class="d-flex justify-content-center mt-2 mb-5 navbar-light">
-        <a href="{{ url('/') }}" class="navbar-brand" style="min-width: 0">
-            <img class="navbar-brand-icon" src="{{ asset('img/Logo.png') }}" width="25" alt="Ahsan Logo">
-            <span>AHSAN</span>
-        </a>
+    <div class="login-card__brand">
+        <div class="login-card__logo">
+            <img src="{{ asset('img/icon.png') }}" alt="Ahsan" width="64" height="64">
+        </div>
+        <h1 class="login-card__title">Ahsan</h1>
+        <p class="login-card__subtitle">Session expired</p>
     </div>
 
-    <h4 class="m-0">Session expired</h4>
-    <p class="mb-4">Your session has expired for security reasons. Please log in again to continue.</p>
+    <p class="text-center text-muted mb-4" style="font-size: 0.9375rem;">
+        Your session has expired for security reasons. Please log in again to continue.
+    </p>
 
-    <div class="form-group text-center">
-        <a class="btn btn-primary mb-2" href="{{ route('login') }}">Log in</a>
-        <p class="mb-0 mt-3">
-            <a class="text-body text-underline" href="{{ route('admin.login') }}">Admin login</a>
-        </p>
+    <div class="form-group">
+        <a class="btn btn-primary btn-block login-form__submit" href="{{ route('login') }}">Log in</a>
+    </div>
+    <div class="text-center mt-3">
+        <a class="login-form__link" href="{{ route('admin.login') }}">Admin login</a>
     </div>
 @endsection

@@ -3,20 +3,17 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header bg-white">
-                    <div class="card-header__title">Welcome, {{ auth()->user()->name }}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
             @if ($campaign)
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h4>{{ $campaign->name }} <span class="badge badge-secondary">{{ $campaign->pivot->location }}</span> <br> <small>Summary</small></h4>
-
-                    @include('components.user.add_sponsor')
+                <div class="dashboard-welcome-row d-flex align-items-center flex-wrap mb-2">
+                    <div class="dashboard-welcome-row__text flex-grow-1 min-w-0">
+                        <span class="card-header__title">Welcome, {{ auth()->user()->name }}</span>
+                        <span class="text-muted mx-2">·</span>
+                        <span class="card-header__title">{{ $campaign->name }}</span>
+                        <span class="badge badge-secondary ml-1">{{ $campaign->pivot->location }}</span>
+                    </div>
+                    <div class="dashboard-welcome-row__action mt-2 mt-sm-0">
+                        @include('components.user.add_sponsor')
+                    </div>
                 </div>
 
                 <div class="row card-group-row">
@@ -90,47 +87,50 @@
                 </div>
 
                 <div class="row card-group-row">
-                    <div class="col-lg-6 col-md-6 card-group-row__col">
-                        <div class="card card-group-row__card">
-                            <div class="card-header">
+                    <div class="col-lg-6 card-group-row__col">
+                        <div class="card card-group-row__card dashboard-table-card">
+                            <div class="card-header dashboard-table-card__header">
                                 <div class="card-header__title">Top 10</div>
                             </div>
-                            <div class="card-body table-responsive">
-                                <table class="table table-bordered">
-                                    <tbody>
-                                        @if ($toppers && count($toppers) > 0)
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Name</th>
-                                                    <th>Amount</th>
-                                                </tr>
-                                            </thead>
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-bordered dashboard-table">
+                                    @if ($toppers && count($toppers) > 0)
+                                        <thead>
+                                            <tr>
+                                                <th class="dashboard-table__rank">#</th>
+                                                <th>Name</th>
+                                                <th class="text-right">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             @foreach ($toppers as $key => $topper)
-                                                <tr class="{{ $topper->id == auth()->id() ? 'bg-info' : '' }}">
-                                                    <td>{{ $key + 1 }}</td>
+                                                <tr class="{{ $topper->id == auth()->id() ? 'table-primary' : '' }}">
+                                                    <td class="dashboard-table__rank">{{ $key + 1 }}</td>
                                                     <td>
-                                                        {{ $topper->name }}
-                                                        <p class="m-0"><small>{{ $topper->batch }}</small></p>
+                                                        <span class="font-weight-medium">{{ $topper->name }}</span>
+                                                        <span class="d-block small text-muted">{{ $topper->batch }}</span>
                                                     </td>
-                                                    <td>{{ number_format($topper->total_amount) }}</td>
+                                                    <td class="text-right dashboard-table__amount">{{ number_format($topper->total_amount) }}</td>
                                                 </tr>
                                             @endforeach
-                                        @else
-                                            <p>No toppers found!</p>
-                                        @endif
-                                    </tbody>
+                                        </tbody>
+                                    @else
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3" class="text-center text-muted py-3">No toppers found!</td>
+                                            </tr>
+                                        </tbody>
+                                    @endif
                                 </table>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 card-group-row__col">
+                    <div class="col-lg-6 card-group-row__col">
                         @include('components.batch_wise', ['campaign' => $campaign])
                     </div>
-
                 </div>
             @else
-                <p>No active campaign found!</p>
+                <p class="text-muted mb-0">No active campaign found!</p>
             @endif
         </div>
     </div>

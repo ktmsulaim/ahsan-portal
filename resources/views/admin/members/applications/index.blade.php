@@ -8,7 +8,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            <div class="card members-table-card">
                 <div class="card-body table-responsive">
                     <div class="row my-2">
                         <div class="col-md-4">
@@ -18,16 +18,16 @@
                             </select>
                         </div>
                     </div>
-                    <table id="membersTable" class="table">
+                    <table id="applicationsTable" class="table members-table">
                         <thead>
                             <tr>
-                                <td>AD.NO</td>
-                                <td>Photo</td>
-                                <td>Name</td>
-                                <td>Batch</td>
-                                <td>Phone</td>
-                                <td>Email</td>
-                                <td></td>
+                                <th>AD.NO</th>
+                                <th>Photo</th>
+                                <th>Name</th>
+                                <th>Batch</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,7 +48,7 @@
             const baseUrl = "/admin/members/applications/ajax/";
             let url = baseUrl + status
 
-            const table = $("#membersTable").DataTable({
+            const table = $("#applicationsTable").DataTable({
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
@@ -65,13 +65,22 @@
                 'createdRow': function(row, data, dataIndex) {
                     $(row).attr('data-id', data.id);
                 },
+                'columnDefs': [
+                    { targets: 0, createdCell: function(td) { td.setAttribute('data-label', 'AD.NO'); } },
+                    { targets: 1, createdCell: function(td) { td.setAttribute('data-label', 'Photo'); } },
+                    { targets: 2, createdCell: function(td) { td.setAttribute('data-label', 'Name'); } },
+                    { targets: 3, createdCell: function(td) { td.setAttribute('data-label', 'Batch'); } },
+                    { targets: 4, createdCell: function(td) { td.setAttribute('data-label', 'Phone'); } },
+                    { targets: 5, createdCell: function(td) { td.setAttribute('data-label', 'Email'); } },
+                    { targets: 6, createdCell: function(td) { td.setAttribute('data-label', 'Action'); } }
+                ],
                 'columns': [{
                         data: 'adno'
                     },
                     {
                         data: 'photo',
                         render: function(data, type, full, meta) {
-                            return `<img width="60" class="img-circle" src="${data}" >`;
+                            return `<img width="60" class="img-circle" src="${data}" alt="">`;
                         }
                     },
                     {
@@ -89,7 +98,7 @@
                     {
                         data: 'url',
                         render: function(data) {
-                            return `<a class="btn btn-sm" href="${data.show}"><span class="material-icons">visibility</span></a>`;
+                            return `<div class="member-actions"><a class="btn btn-sm btn-member-action" href="${data.show}"><span class="material-icons">visibility</span> View</a></div>`;
                         },
                         orderable: false
                     }

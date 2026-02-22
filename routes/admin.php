@@ -94,6 +94,8 @@ Route::middleware('admin')->group(function () {
      */
     Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports.index');
     Route::get('/reports/show', [ReportController::class, 'show'])->name('admin.reports.show');
+    Route::get('/reports/whatsapp', [ReportController::class, 'whatsappIndex'])->name('admin.reports.whatsapp');
+    Route::get('/reports/whatsapp/show', [ReportController::class, 'whatsappShow'])->name('admin.reports.whatsapp.show');
 
     /**
      * ---------------------------------------------------------------------

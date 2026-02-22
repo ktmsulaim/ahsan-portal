@@ -8,6 +8,15 @@
 @section('content')
 
     @if ($camp)
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <div class="card-header__title">WhatsApp reports</div>
+            </div>
+            <div class="card-body">
+                <p class="mb-2">Generate copy-paste ready reports for WhatsApp (batch wise, toppers, target).</p>
+                <a href="{{ route('admin.reports.whatsapp') }}" class="btn btn-success">Open WhatsApp reports</a>
+            </div>
+        </div>
         <div class="row card-group-row">
             <div class="col-md-4 card-group-row__col">
                 <div class="card card-group-row__card">

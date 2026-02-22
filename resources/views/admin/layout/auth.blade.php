@@ -1,6 +1,7 @@
-@include('components.header', ['body_class' => 'layout-login-centered-boxed', 'title' => 'Login'])
+@include('components.header', ['body_class' => 'layout-login', 'title' => 'Admin Login'])
 
-<div class="layout-login-centered-boxed__form card">
+<div class="layout-login__overlay"></div>
+<div class="layout-login__form bg-white" data-perfect-scrollbar>
     @yield('content')
 </div>
 

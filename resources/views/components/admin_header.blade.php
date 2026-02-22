@@ -63,30 +63,15 @@
                     </li>
                 </ul>
 
-                <ul class="nav navbar-nav d-none d-sm-flex border-left navbar-height align-items-center">
+                <ul class="nav navbar-nav flex ml-auto border-left navbar-height align-items-center navbar-account d-none d-lg-flex">
                     <li class="nav-item dropdown">
-                        <a href="#account_menu" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                        <a href="#account_menu" class="nav-link dropdown-toggle d-flex align-items-center py-2" data-toggle="dropdown"
                             data-caret="false">
-                            <span class="mr-1 d-flex-inline">
-                                <span class="text-light">{{ auth('admin')->user()->name }}</span>
-                            </span>
-                            <img src="{{ asset('assets/images/user.png') }}" class="rounded-circle" width="32"
-                                alt="Frontted">
+                            <span class="mr-1 d-none d-md-inline text-light text-truncate" style="max-width: 120px;">{{ auth('admin')->user()->name }}</span>
+                            <img src="{{ asset('assets/images/user.png') }}" class="rounded-circle flex-shrink-0" width="32" height="32"
+                                alt="">
                         </a>
-                        <div id="account_menu" class="dropdown-menu dropdown-menu-right">
-                            <div class="dropdown-item-text dropdown-item-text--lh">
-                                <div><strong>{{ auth('admin')->user()->name }}</strong></div>
-                                <div class="text-muted">{{ auth('admin')->user()->email }}</div>
-                            </div>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('admin.index') }}"><i
-                                    class="material-icons">dvr</i> Dashboard</a>
-                            <a class="dropdown-item" href="{{ route('admin.changePassword') }}"><i class="material-icons">edit</i>
-                                Change password</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('admin.logout') }}"><i
-                                    class="material-icons">exit_to_app</i> Logout</a>
-                        </div>
+                        @include('components.admin_account_dropdown', ['menuId' => 'account_menu', 'menuClass' => 'navbar-account-menu'])
                     </li>
                 </ul>
 

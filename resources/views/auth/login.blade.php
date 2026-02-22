@@ -1,67 +1,56 @@
-@extends('layouts.auth')
+@extends('layouts.auth', ['title' => 'Login'])
 
 @section('content')
-    <div class="d-flex justify-content-center mt-2 mb-5 navbar-light">
-        <a href="{{ url('/') }}" class="navbar-brand" style="min-width: 0">
-            <img class="navbar-brand-icon" src="{{ asset('img/Logo.png') }}" width="25" alt="Ahsan Logo">
-            <span>AHSAN</span>
-        </a>
+    <div class="login-card__brand">
+        <div class="login-card__logo">
+            <img src="{{ asset('img/icon.png') }}" alt="Ahsan" width="64" height="64">
+        </div>
+        <h1 class="login-card__title">Ahsan</h1>
+        <p class="login-card__subtitle">Log in to your account</p>
     </div>
 
-    <h4 class="m-0">Welcome back!</h4>
-    <p class="mb-5">Login to access your Account</p>
-
-    <form action="{{ route('login') }}" method="POST" autocomplete="on">
+    <form action="{{ route('login') }}" method="POST" autocomplete="on" class="login-form">
         @csrf
         <div class="form-group">
-            <label class="text-label" for="email">Email Address:</label>
-            <div class="input-group input-group-merge">
-                <input id="email" type="email" required name="email" value="{{ old('email') }}"
-                    class="form-control form-control-prepended @error('email') is-invalid @enderror"
-                    placeholder="yourname@email.com" autocomplete="email" inputmode="email" spellcheck="false">
+            <label class="login-form__label" for="email">Email address</label>
+            <div class="input-group login-form__input">
                 <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <span class="far fa-envelope"></span>
-                    </div>
+                    <span class="input-group-text"><span class="far fa-envelope"></span></span>
                 </div>
+                <input id="email" type="email" required name="email" value="{{ old('email') }}"
+                    class="form-control @error('email') is-invalid @enderror"
+                    placeholder="yourname@email.com" autocomplete="email" inputmode="email" spellcheck="false">
             </div>
-
-            @if ($errors->has('email'))
-                <span class="invalid-feedback d-block" role="alert">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </span>
-            @endif
+            @error('email')
+                <span class="invalid-feedback d-block" role="alert">{{ $message }}</span>
+            @enderror
         </div>
         <div class="form-group">
-            <label class="text-label" for="password">Password:</label>
-            <div class="input-group input-group-merge">
-                <input id="password" type="password" name="password" required
-                    class="form-control form-control-prepended @error('password') is-invalid @enderror"
-                    placeholder="Enter your password" autocomplete="current-password">
+            <label class="login-form__label" for="password">Password</label>
+            <div class="input-group login-form__input">
                 <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <span class="fa fa-key"></span>
-                    </div>
+                    <span class="input-group-text"><span class="fa fa-key"></span></span>
                 </div>
+                <input id="password" type="password" name="password" required
+                    class="form-control @error('password') is-invalid @enderror"
+                    placeholder="Enter your password" autocomplete="current-password">
             </div>
-
-            @if ($errors->has('password'))
-                <span class="invalid-feedback d-block" role="alert">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </span>
-            @endif
+            @error('password')
+                <span class="invalid-feedback d-block" role="alert">{{ $message }}</span>
+            @enderror
         </div>
-        <div class="form-group mb-5">
+        <div class="form-group">
+            <button class="btn btn-primary btn-block login-form__submit" type="submit">Login</button>
+        </div>
+        <div class="form-group login-form__remember">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" checked name="remember" id="remember">
                 <label class="custom-control-label" for="remember">Remember me</label>
             </div>
         </div>
-        <div class="form-group text-center">
-            <button class="btn btn-primary mb-5" type="submit">Login</button><br>
-            <p>Forgot password? <a class="text-body text-underline" href="{{ route('password.request') }}">Reset here</a></p>
-            <p>Don't have an account? <a class="text-body text-underline" href="{{ route('membership.apply') }}">Apply!</a></p>
-            <p class="d-md-none mt-3 small text-muted">On mobile? Use your browser menu to <strong>Add to Home Screen</strong> for quick access.</p>
+        <div class="login-form__footer text-center">
+            <p class="mb-1"><a href="{{ route('password.request') }}" class="login-form__link">Forgot password?</a></p>
+            <p class="mb-0"><a href="{{ route('membership.apply') }}" class="login-form__link">Don't have an account? Apply</a></p>
         </div>
     </form>
 @endsection

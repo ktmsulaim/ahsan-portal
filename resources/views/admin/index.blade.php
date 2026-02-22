@@ -72,16 +72,16 @@
                                 </div>
                                 <div class="card-body table-responsive">
                                     <table class="table table-bordered">
-                                        <tbody>
-                                            @if (\App\Models\User::toppers() && count(\App\Models\User::toppers()) > 0)
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Batch</th>
-                                                        <th>Amount</th>
-                                                    </tr>
-                                                </thead>
+                                        @if (\App\Models\User::toppers() && count(\App\Models\User::toppers()) > 0)
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Batch</th>
+                                                    <th>Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                                 @foreach (\App\Models\User::toppers() as $key => $topper)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
@@ -90,10 +90,14 @@
                                                         <td>{{ number_format($topper->total_amount) }}</td>
                                                     </tr>
                                                 @endforeach
-                                            @else
-                                                <p>No toppers found!</p>
-                                            @endif
-                                        </tbody>
+                                            </tbody>
+                                        @else
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="4" class="text-center text-muted py-4">No toppers found!</td>
+                                                </tr>
+                                            </tbody>
+                                        @endif
                                     </table>
                                 </div>
                             </div>

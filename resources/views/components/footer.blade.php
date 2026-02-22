@@ -146,6 +146,8 @@
 
     {!! Toastr::message() !!}
 
+    @include('components.pwa-install-prompt')
+
     @yield('js')
 </body>
 
