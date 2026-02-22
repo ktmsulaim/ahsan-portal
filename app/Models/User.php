@@ -68,7 +68,13 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($val)
     {
-        if ($val) {
+        if (!$val) {
+            return;
+        }
+        // Avoid double-hashing: password reset and some flows set an already-hashed value
+        if (strlen($val) === 60 && preg_match('/^\$2[ay]\$\d{2}\$/', $val)) {
+            $this->attributes['password'] = $val;
+        } else {
             $this->attributes['password'] = bcrypt($val);
         }
     }

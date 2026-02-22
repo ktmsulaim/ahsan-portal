@@ -38,6 +38,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
     
     <link rel="shortcut icon" href="{{ asset('img/icon.png') }}" type="image/x-icon">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="theme-color" content="#343a40">
+    <link rel="apple-touch-icon" href="{{ asset('img/icon.png') }}">
 
     @yield('css')
 

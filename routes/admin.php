@@ -77,6 +77,7 @@ Route::middleware('admin')->group(function () {
     Route::get('/sponsors/campaigns/{campaign}', [SponsorController::class, 'index'])->name('admin.sponsors.index');
 
     Route::get('/members/{user}/campaigns/{campaign}', [SponsorController::class, 'byUser'])->name('admin.sponsors.byUser');
+    Route::post('/members/{user}/campaigns/{campaign}/location', [SponsorController::class, 'updateUserCampaignLocation'])->name('admin.user-campaign.updateLocation');
     Route::get('/members/{user}/campaigns/{campaign}/sponsors', [SponsorController::class, 'dtByUser'])->name('admin.sponsors.dtByUser');
 
     /**

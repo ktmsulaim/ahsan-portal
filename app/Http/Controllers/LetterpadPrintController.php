@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sponsor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Meneses\LaravelMpdf\Facades\LaravelMpdf;
+use Mccarlosen\LaravelMpdf\Facades\LaravelMpdf;
 
 class LetterpadPrintController extends Controller
 {

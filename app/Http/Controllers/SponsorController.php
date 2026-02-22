@@ -32,6 +32,10 @@ class SponsorController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
+        // Only allow ordering by actual database columns (urls, user are computed fields)
+        $sortableColumns = ['id', 'name', 'place', 'phone', 'amount', 'amount_received', 'created_at', 'verification'];
+        $orderColumn = in_array($columnName, $sortableColumns) ? $columnName : 'id';
+
         // Total records
         $totalRecords = $campaign->sponsors()->count();
 
@@ -44,7 +48,7 @@ class SponsorController extends Controller
             ->count();
 
         // Fetch records
-        $sponsors = $campaign->sponsors()->orderBy($columnName, $columnSortOrder)
+        $sponsors = $campaign->sponsors()->orderBy($orderColumn, $columnSortOrder)
             ->where(function ($query) use ($searchValue) {
                 $query->where('name', 'like', '%' . $searchValue . '%')
                     ->orWhere('place', 'like', '%' . $searchValue . '%')
@@ -91,7 +95,31 @@ class SponsorController extends Controller
 
     public function byUser(User $user, Campaign $campaign)
     {
-        return view('admin.members.campaigns.view', compact('user', 'campaign'));
+        $userCampaign = $user->campaigns()->where('campaigns.id', $campaign->id)->first();
+        return view('admin.members.campaigns.view', compact('user', 'campaign', 'userCampaign'));
+    }
+
+    public function updateUserCampaignLocation(Request $request, User $user, Campaign $campaign)
+    {
+        $locations = $campaign->locations ?? [];
+        $validLocations = is_array($locations) ? array_keys($locations) : [];
+        $location = $request->get('location');
+
+        if (count($validLocations) > 0) {
+            $request->validate(['location' => 'required|string|in:' . implode(',', $validLocations)]);
+        } else {
+            $location = $location ?: 'General';
+        }
+
+        $existing = $user->campaigns()->where('campaigns.id', $campaign->id)->first();
+        if ($existing) {
+            $user->campaigns()->updateExistingPivot($campaign->id, ['location' => $location]);
+        } else {
+            $user->campaigns()->attach($campaign->id, ['location' => $location]);
+        }
+
+        Toastr::success('Location has been set for this campaign.');
+        return Redirect::back();
     }
 
     public function dtByUser(Request $request, User $user, Campaign $campaign)
@@ -110,6 +138,10 @@ class SponsorController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
+        // Only allow ordering by actual database columns (urls is a computed field)
+        $sortableColumns = ['id', 'name', 'place', 'phone', 'amount', 'amount_received', 'created_at', 'verification'];
+        $orderColumn = in_array($columnName, $sortableColumns) ? $columnName : 'id';
+
         // Total records
         $sponsorGroup = Sponsor::where(['user_id' => $user->id, 'campaign_id' => $campaign->id]);
         $totalRecords = $sponsorGroup->count();
@@ -117,7 +149,7 @@ class SponsorController extends Controller
             return $query->where('name', 'like', "%$searchValue%")->orWhere('place', 'like', "%$searchValue%");
         })->count();
         // Fetch records
-        $sponsors = $sponsorGroup->orderBy($columnName, $columnSortOrder)
+        $sponsors = $sponsorGroup->orderBy($orderColumn, $columnSortOrder)
             ->where(function ($query) use ($searchValue) {
                 return $query->where('name', 'like', "%$searchValue%")->orWhere('place', 'like', "%$searchValue%");
             })

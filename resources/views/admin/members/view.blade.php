@@ -120,15 +120,15 @@
                 </div>
 
                 <div class="tab-pane" id="campaigns">
-                    @if (count($user->campaigns) > 0)
+                    @if (count($campaigns) > 0)
                         <div class="row card-group-row">
-                            @foreach ($user->campaigns()->orderBy('created_at', 'desc')->get() as $camp)
+                            @foreach ($campaigns as $camp)
                             @php
+                                $userCampaign = $user->campaigns()->where('campaigns.id', $camp->id)->first();
                                 $totalSponsors = $user->sponsors()->where('campaign_id', $camp->id)->count();
                                 $totalAmount = $user->sponsors()->where('campaign_id', $camp->id)->sum('amount');
-                                $targetMet =  ($totalAmount >= $camp->individualTarget('', true, $camp->pivot->location)) ? 'Yes' : 'No';
+                                $targetMet = $userCampaign ? (($totalAmount >= $camp->individualTarget('', true, $userCampaign->pivot->location)) ? 'Yes' : 'No') : '-';
                                 $topAmount = $user->sponsors()->where('campaign_id', $camp->id)->orderBy('amount', 'desc')->first();
-
                             @endphp
                             <div class="col-lg-6 col-md-6 card-group-row__col">
                                 <div class="card card-group-row__card">
@@ -138,6 +138,11 @@
                                         </div>
                                         <div class="card-title my-2">
                                             <h4><a href="{{ route('admin.sponsors.byUser', ['user' => $user->id, 'campaign' => $camp->id]) }}">{{ $camp->name }}</a></h4>
+                                            @if (!$userCampaign)
+                                                <span class="badge badge-warning">Location not set</span>
+                                            @else
+                                                <span class="badge badge-secondary">{{ $userCampaign->pivot->location }}</span>
+                                            @endif
                                         </div>
                                         <div class="summary">
                                             <div class="row">
@@ -160,11 +165,14 @@
                                                     <span class="ml-2">₹{{ $topAmount ? number_format($topAmount->amount) : 0 }}</span>
                                                 </div>
                                             </div>
+                                            @if (!$userCampaign)
+                                                <p class="text-muted small mt-2 mb-0">Set location for this campaign to add sponsors.</p>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            @endforeach    
+                            @endforeach
                         </div>
                     @else
                         <p>No campaigns found!</p>

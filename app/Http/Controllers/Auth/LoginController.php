@@ -52,4 +52,20 @@ class LoginController extends Controller
     protected function loggedOut(Request $request) {
         return redirect('/login');
     }
+
+    /**
+     * Get the login credentials from the request, normalized for mobile/autocomplete.
+     * Trims whitespace and lowercases email to avoid "invalid credentials" from
+     * keyboard/paste quirks (e.g. trailing space, wrong case).
+     */
+    protected function credentials(Request $request)
+    {
+        $email = $request->input($this->username());
+        $password = $request->input('password');
+
+        return [
+            $this->username() => is_string($email) ? strtolower(trim($email)) : $email,
+            'password' => is_string($password) ? trim($password) : $password,
+        ];
+    }
 }
